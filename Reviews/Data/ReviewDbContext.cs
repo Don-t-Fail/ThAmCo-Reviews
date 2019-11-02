@@ -14,7 +14,7 @@ namespace Reviews.Data
         public virtual DbSet<Purchase> Purchase { get; set; }
         public virtual DbSet<Review> Review { get; set; }
 
-        private IHostingEnvironment HostEnv { get; set; }
+        private IHostingEnvironment HostEnv { get; }
 
         public ReviewDbContext(DbContextOptions<ReviewDbContext> options, IHostingEnvironment env) : base(options)
         {
