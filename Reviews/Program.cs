@@ -25,12 +25,12 @@ namespace Reviews
             {
                 var services = scope.ServiceProvider;
                 var env = services.GetRequiredService<IHostingEnvironment>();
+                var context = services.GetRequiredService<ReviewDbContext>();
                 if (env.IsDevelopment())
                 {
-                    var context = services.GetRequiredService<ReviewDbContext>();
-                    context.Database.EnsureDeleted();
-                    context.Database.Migrate();
+                    context.Database.EnsureDeleted();                    
                 }
+                context.Database.Migrate();
             }
             host.Run();
         }
