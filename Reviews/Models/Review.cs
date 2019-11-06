@@ -14,5 +14,8 @@ namespace Reviews.Models
         public bool IsVisible { get; set; }
         public int Rating { get; set; }
         public string Content { get; set; }
+
+        public virtual Account Account { get; set; }
+        public virtual Purchase Purchase { get; set; }
     }
 }
