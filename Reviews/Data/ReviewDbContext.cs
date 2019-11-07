@@ -32,6 +32,11 @@ namespace Reviews.Data
                     new Account {Id = 1, IsStaff = false},
                     new Account { Id = 2, IsStaff = true}
                 );
+
+                builder.Entity<Purchase>().HasData(
+                    new Purchase { AccountId = 1, ProductId = 1},
+                    new Purchase { AccountId = 1, ProductId = 2}
+                );
             }
         }
 }
