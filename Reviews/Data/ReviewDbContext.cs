@@ -28,6 +28,20 @@ namespace Reviews.Data
             if (HostEnv != null && HostEnv.IsDevelopment())
             {
                 //Seed Data
+                builder.Entity<Account>().HasData(
+                    new Account { Id = 1, IsStaff = false},
+                    new Account { Id = 2, IsStaff = true}
+                );
+
+                builder.Entity<Purchase>().HasData(
+                    new Purchase { Id = 1, AccountId = 1, ProductId = 1},
+                    new Purchase { Id = 2, AccountId = 1, ProductId = 2}
+                );
+
+                builder.Entity<Review>().HasData(
+                    new Review { Id = 1, IsVisible = true, Content = "This is a test review for product 1", PurchaseId = 1 },
+                    new Review { Id = 2, IsVisible = true, Content = "This is a review for product 2", PurchaseId = 2 }
+                );
             }
         }
 }
