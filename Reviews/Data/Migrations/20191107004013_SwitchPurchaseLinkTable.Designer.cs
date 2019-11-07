@@ -9,8 +9,8 @@ using Reviews.Data;
 namespace Reviews.Migrations
 {
     [DbContext(typeof(ReviewDbContext))]
-    [Migration("20191106231144_TweakReviewModel")]
-    partial class TweakReviewModel
+    [Migration("20191107004013_SwitchPurchaseLinkTable")]
+    partial class SwitchPurchaseLinkTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -56,13 +56,9 @@ namespace Reviews.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AccountId");
-
                     b.Property<string>("Content");
 
                     b.Property<bool>("IsVisible");
-
-                    b.Property<int>("ProductId");
 
                     b.Property<int>("PurchaseId");
 
@@ -70,9 +66,8 @@ namespace Reviews.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccountId");
-
-                    b.HasIndex("PurchaseId");
+                    b.HasIndex("PurchaseId")
+                        .IsUnique();
 
                     b.ToTable("Review");
                 });
@@ -87,14 +82,9 @@ namespace Reviews.Migrations
 
             modelBuilder.Entity("Reviews.Models.Review", b =>
                 {
-                    b.HasOne("Reviews.Models.Account", "Account")
-                        .WithMany("Reviews")
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Reviews.Models.Purchase", "Purchase")
-                        .WithMany()
-                        .HasForeignKey("PurchaseId")
+                        .WithOne("Review")
+                        .HasForeignKey("Reviews.Models.Review", "PurchaseId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

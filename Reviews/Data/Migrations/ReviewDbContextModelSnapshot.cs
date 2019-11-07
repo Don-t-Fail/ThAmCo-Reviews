@@ -29,29 +29,9 @@ namespace Reviews.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Account");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            IsStaff = false
-                        });
                 });
 
-            modelBuilder.Entity("Reviews.Models.Product", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Product");
-                });
-
-            modelBuilder.Entity("Reviews.Models.Review", b =>
+            modelBuilder.Entity("Reviews.Models.Purchase", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -59,44 +39,50 @@ namespace Reviews.Migrations
 
                     b.Property<int>("AccountId");
 
-                    b.Property<string>("Content");
-
-                    b.Property<bool>("IsVisible");
-
                     b.Property<int>("ProductId");
-
-                    b.Property<int>("Rating");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
 
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Review");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AccountId = 1,
-                            Content = "This is a test review",
-                            IsVisible = true,
-                            ProductId = 1,
-                            Rating = 4
-                        });
+                    b.ToTable("Purchase");
                 });
 
             modelBuilder.Entity("Reviews.Models.Review", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content");
+
+                    b.Property<bool>("IsVisible");
+
+                    b.Property<int>("PurchaseId");
+
+                    b.Property<int>("Rating");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PurchaseId")
+                        .IsUnique();
+
+                    b.ToTable("Review");
+                });
+
+            modelBuilder.Entity("Reviews.Models.Purchase", b =>
+                {
                     b.HasOne("Reviews.Models.Account", "Account")
-                        .WithMany("Reviews")
+                        .WithMany("Purchases")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
 
-                    b.HasOne("Reviews.Models.Product", "Product")
-                        .WithMany("Reviews")
-                        .HasForeignKey("ProductId")
+            modelBuilder.Entity("Reviews.Models.Review", b =>
+                {
+                    b.HasOne("Reviews.Models.Purchase", "Purchase")
+                        .WithOne("Review")
+                        .HasForeignKey("Reviews.Models.Review", "PurchaseId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

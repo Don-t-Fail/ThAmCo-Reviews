@@ -11,7 +11,7 @@ namespace Reviews.Data
     public class ReviewDbContext : DbContext
     {
         public virtual DbSet<Account> Account { get; set; }
-        public virtual DbSet<Product> Product { get; set; }
+        public virtual DbSet<Purchase> Purchase { get; set; }
         public virtual DbSet<Review> Review { get; set; }
 
         private IHostingEnvironment HostEnv { get; }
@@ -28,21 +28,6 @@ namespace Reviews.Data
             if (HostEnv != null && HostEnv.IsDevelopment())
             {
                 //Seed Data
-                builder.Entity<Account>().HasData(
-                    new Account { Id = 1, IsStaff = false }
-                );
-
-                builder.Entity<Review>().HasData(
-                    new Review
-                    {
-                        AccountId = 1,
-                        Content = "This is a test review",
-                        Id = 1,
-                        ProductId = 1,
-                        IsVisible = true,
-                        Rating = 4
-                    }
-                );
             }
         }
 }
