@@ -21,13 +21,6 @@ namespace Reviews.Controllers
             _context = context;
         }
 
-        // GET: api/Reviews
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Review>>> GetReview()
-        {
-            return await _context.Review.ToListAsync();
-        }
-
         // GET: api/Reviews/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Review>> GetReview(int id)
@@ -97,11 +90,25 @@ namespace Reviews.Controllers
             await _context.SaveChangesAsync();
 
             return review;
-        }
+        }        
 
         private bool ReviewExists(int id)
         {
             return _context.Review.Any(e => e.Id == id);
+        }
+
+        /**/
+
+        // GET: api/Reviews?ProdId={id}
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Review>>> GetReviewProduct(int prodId)
+        {
+            var reviews = await _context.Review.Where(p => p.Purchase.ProductId == prodId).ToListAsync();
+            if (reviews == null)
+            {
+                return NotFound();
+            }
+            return reviews;
         }
     }
 }

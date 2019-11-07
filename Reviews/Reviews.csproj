@@ -10,6 +10,10 @@
     <Compile Remove="Data\Migrations\20191106231144_TweakReviewModel.Designer.cs" />
     <Compile Remove="Data\Migrations\20191107000540_RemovePurchaseAddProduct.cs" />
     <Compile Remove="Data\Migrations\20191107000540_RemovePurchaseAddProduct.Designer.cs" />
+    <Compile Remove="Data\Migrations\20191107150705_TweakReviewKey.cs" />
+    <Compile Remove="Data\Migrations\20191107150705_TweakReviewKey.Designer.cs" />
+    <Compile Remove="Data\Migrations\20191107152127_UpdatedContext.cs" />
+    <Compile Remove="Data\Migrations\20191107152127_UpdatedContext.Designer.cs" />
   </ItemGroup>
 
 

@@ -42,7 +42,9 @@ namespace Reviews.Data
 
                 builder.Entity<Review>().HasData(
                     new Review { Id = 1, IsVisible = true, Rating = 5, Content = "This is a test review for product 1", PurchaseId = 1 },
-                    new Review { Id = 2, IsVisible = true, Rating = 2, Content = "This is a review for product 2", PurchaseId = 2 }
+                    new Review { Id = 2, IsVisible = true, Rating = 2, Content = "This is a review for product 2", PurchaseId = 2 },
+                    new Review { Id = 3, IsVisible = true, Rating = 5, Content = "This is a test review for product 1", PurchaseId = 3 }
+
                 );
             }
         }
