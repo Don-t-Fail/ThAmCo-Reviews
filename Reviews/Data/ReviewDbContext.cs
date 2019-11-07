@@ -29,7 +29,7 @@ namespace Reviews.Data
             {
                 //Seed Data
                 builder.Entity<Account>().HasData(
-                    new Account {Id = 1, IsStaff = false},
+                    new Account { Id = 1, IsStaff = false},
                     new Account { Id = 2, IsStaff = true}
                 );
 
