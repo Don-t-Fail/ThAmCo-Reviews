@@ -30,12 +30,14 @@ namespace Reviews.Data
                 //Seed Data
                 builder.Entity<Account>().HasData(
                     new Account { Id = 1, IsStaff = false},
-                    new Account { Id = 2, IsStaff = true}
+                    new Account { Id = 2, IsStaff = true},
+                    new Account { Id = 3, IsStaff = false}
                 );
 
                 builder.Entity<Purchase>().HasData(
                     new Purchase { Id = 1, AccountId = 1, ProductId = 1},
-                    new Purchase { Id = 2, AccountId = 1, ProductId = 2}
+                    new Purchase { Id = 2, AccountId = 1, ProductId = 2},
+                    new Purchase { Id = 3, AccountId = 3, ProductId = 1}
                 );
 
                 builder.Entity<Review>().HasData(
