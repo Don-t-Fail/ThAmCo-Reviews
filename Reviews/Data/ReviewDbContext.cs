@@ -34,8 +34,8 @@ namespace Reviews.Data
                 );
 
                 builder.Entity<Purchase>().HasData(
-                    new Purchase { AccountId = 1, ProductId = 1},
-                    new Purchase { AccountId = 1, ProductId = 2}
+                    new Purchase { Id = 1, AccountId = 1, ProductId = 1},
+                    new Purchase { Id = 2, AccountId = 1, ProductId = 2}
                 );
             }
         }
