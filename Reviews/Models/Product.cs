@@ -5,12 +5,11 @@ using System.Threading.Tasks;
 
 namespace Reviews.Models
 {
-    public class Purchase
+    public class Product
     {
         public int Id { get; set; }
-        public int ProductId { get; set; }
-        public int AccountId { get; set; }
+        public string Name { get; set; }
 
-        public virtual Account Account { get; set; }
+        public virtual ICollection<Review> Reviews { get; set; }
     }
 }

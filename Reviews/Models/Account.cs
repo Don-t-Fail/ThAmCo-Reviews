@@ -10,7 +10,6 @@ namespace Reviews.Models
         public int Id { get; set; }
         public bool IsStaff { get; set; }
 
-        public virtual ICollection<Purchase> Purchases { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
     }
 }
