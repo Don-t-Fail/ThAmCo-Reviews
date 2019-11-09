@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Reviews.Data;
 
 namespace Reviews.Migrations
 {
     [DbContext(typeof(ReviewDbContext))]
-    partial class ReviewDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191107142756_AdditionalSeedData")]
+    partial class AdditionalSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,14 +124,6 @@ namespace Reviews.Migrations
                             IsVisible = true,
                             PurchaseId = 2,
                             Rating = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Content = "This is a test review for product 1",
-                            IsVisible = true,
-                            PurchaseId = 3,
-                            Rating = 5
                         });
                 });
 

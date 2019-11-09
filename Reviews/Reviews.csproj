@@ -10,6 +10,10 @@
     <Compile Remove="Data\Migrations\20191106231144_TweakReviewModel.Designer.cs" />
     <Compile Remove="Data\Migrations\20191107000540_RemovePurchaseAddProduct.cs" />
     <Compile Remove="Data\Migrations\20191107000540_RemovePurchaseAddProduct.Designer.cs" />
+    <Compile Remove="Data\Migrations\20191107150705_TweakReviewKey.cs" />
+    <Compile Remove="Data\Migrations\20191107150705_TweakReviewKey.Designer.cs" />
+    <Compile Remove="Data\Migrations\20191107152127_UpdatedContext.cs" />
+    <Compile Remove="Data\Migrations\20191107152127_UpdatedContext.Designer.cs" />
   </ItemGroup>
 
 
@@ -22,6 +26,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.4" />
     <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="2.2.0" />
   </ItemGroup>
 
