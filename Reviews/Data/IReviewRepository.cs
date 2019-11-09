@@ -8,11 +8,13 @@ namespace Reviews.Data
 {
     public interface IReviewRepository
     {
-        Review GetReview(int id);
+        Task<IEnumerable<Review>> GetAll();
+        Task<Review> GetReview(int id);
         void InsertReview(Review review);
         void DeleteReview(int id);
         void UpdateReview(Review review);
         void HideReview(int id);
-        IEnumerable<Review> GetReviewsByProduct(int prodId);
+        Task<IEnumerable<Review>> GetReviewsByProduct(int prodId);
+        Task Save();
     }
 }

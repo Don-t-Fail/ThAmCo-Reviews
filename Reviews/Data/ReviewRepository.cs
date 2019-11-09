@@ -23,14 +23,19 @@ namespace Reviews.Data
             throw new NotImplementedException();
         }
 
-        public Review GetReview(int id)
+        public async Task<IEnumerable<Review>> GetAll()
         {
-            return _context.Review.Find(id);
+            return await _context.Review.ToListAsync();
         }
 
-        public IEnumerable<Review> GetReviewsByProduct(int prodId)
+        public async Task<Review> GetReview(int id)
         {
-            return _context.Review.Where(p => p.Purchase.ProductId == prodId).ToList();
+            return await _context.Review.Where(r => r.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<Review>> GetReviewsByProduct(int prodId)
+        {
+            return await _context.Review.Where(p => p.Purchase.ProductId == prodId).ToListAsync();
         }
 
         public void HideReview(int id)
@@ -48,9 +53,9 @@ namespace Reviews.Data
             _context.Entry(review).State = EntityState.Modified;
         }
 
-        public void Save()
+        public async Task Save()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }
