@@ -15,5 +15,11 @@ namespace Reviews.Controllers.Tests
         {
             Assert.Fail();
         }
+
+        [TestMethod]
+        public void ProductAverageTest()
+        {
+            Assert.Fail();
+        }
     }
 }
