@@ -35,36 +35,36 @@ namespace Reviews.Controllers
             return review;
         }
 
-        //// PUT: api/Reviews/5
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutReview(int id, Review review)
-        //{
-        //    if (id != review.Id)
-        //    {
-        //        return BadRequest();
-        //    }
+        // PUT: api/Reviews/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutReview(int id, Review review)
+        {
+            if (id != review.Id)
+            {
+                return BadRequest();
+            }
 
-        //    review.Id = id;
-        //    _repository.InsertReview(review);
+            review.Id = id;
+            _repository.InsertReview(review);
 
-        //    try
-        //    {
-        //        _repository.Save();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!ReviewExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+            try
+            {
+                await _repository.Save();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ReviewExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
 
         // POST: api/Reviews
         [HttpPost]
