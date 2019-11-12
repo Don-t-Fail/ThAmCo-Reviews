@@ -104,5 +104,21 @@ namespace Reviews.Controllers
         }
 
         [HttpGet]
+        public async Task<ActionResult<int>> ProductAverage(int prodId)
+        {
+            var avg = 0;
+            var purchases = await _context.Review.Where(r => r.Purchase.ProductId == prodId).ToListAsync();
+            if (purchases.Count > 0)
+            {
+                foreach (var item in purchases)
+                {
+                    avg += item.Rating;
+                }
+
+                return avg / purchases.Count();
+            }
+
+            return NotFound();
+        }
     }
 }
