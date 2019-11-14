@@ -74,7 +74,7 @@ namespace Reviews.Controllers.Tests
             var result = await controller.ProductAverage(prodId);
 
             //Assert
-            Assert.AreEqual(2.75,result.Value);
+            Assert.AreEqual(2.75, result.Value);
         }
 
         [TestMethod]
@@ -113,6 +113,30 @@ namespace Reviews.Controllers.Tests
 
             //Assert
             Assert.AreEqual(2, result.Value);
+        }
+
+        [TestMethod]
+        public void PutReviewTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void PostReviewTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void DeleteReviewTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void GetReviewProductTest()
+        {
+            Assert.Fail();
         }
     }
 }

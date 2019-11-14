@@ -38,26 +38,7 @@ namespace Reviews.Data
 
         public async Task<IEnumerable<Review>> GetReviewsByProduct(int prodId)
         {
-            return await _context.Review.Where(r => r.Purchase.ProductId == prodId).ToListAsync();
-        }
-
-        public async Task<double> GetProductAverage(int prodId)
-        {
-            var avg = 0;
-            var purchases = await GetReviewsByProduct(prodId);
-            //Filter removed/hidden reviews
-            purchases = purchases.Where(p => p.IsVisible);
-            if (purchases.Any())
-            {
-                foreach (var item in purchases)
-                {
-                    avg += item.Rating;
-                }
-
-                return (double)avg / (double)purchases.Count();
-            }
-
-            return -1;
+            return await _context.Review.Where(r => r.Purchase.ProductId == prodId && r.IsVisible).ToListAsync();
         }
 
         public async void HideReview(int id)
