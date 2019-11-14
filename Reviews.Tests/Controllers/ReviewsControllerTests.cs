@@ -49,6 +49,43 @@ namespace Reviews.Controllers.Tests
                 {
                     AccountId = 1, Id = 1, ProductId = 1
                 }},
+                new Review { Id = 2, Content = "Review No. 2", IsVisible = true, PurchaseId = 4, Rating = 5, Purchase = new Purchase
+                {
+                    AccountId = 2, Id = 4, ProductId = 1
+                }},
+                new Review { Id = 4, Content = "Review No. 4", IsVisible = true, PurchaseId = 2, Rating = 3, Purchase = new Purchase
+                {
+                    AccountId = 1, Id = 2, ProductId = 1
+                }},
+                new Review { Id = 5, Content = "Review No. 5", IsVisible = true, PurchaseId = 3, Rating = 2, Purchase = new Purchase
+                {
+                    AccountId = 2, Id = 3, ProductId = 1
+                }},
+                new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3, Purchase = new Purchase
+                {
+                    AccountId = 3, ProductId = 4, Id =  12
+                }}
+            };
+            var repo = new FakeReviewRepository(reviews);
+            var controller = new ReviewsController(repo);
+            var prodId = 1;
+
+            //Act
+            var result = await controller.ProductAverage(prodId);
+
+            //Assert
+            Assert.AreEqual(2.75,result.Value);
+        }
+
+        public async Task ProductAverageTestAsync_Hidden()
+        {
+            //Arrange
+            var reviews = new List<Review>
+            {
+                new Review { Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 1, Purchase = new Purchase
+                {
+                    AccountId = 1, Id = 1, ProductId = 1
+                }},
                 new Review { Id = 2, Content = "Review No. 2", IsVisible = false, PurchaseId = 4, Rating = 5, Purchase = new Purchase
                 {
                     AccountId = 2, Id = 4, ProductId = 1
@@ -74,7 +111,7 @@ namespace Reviews.Controllers.Tests
             var result = await controller.ProductAverage(prodId);
 
             //Assert
-            Assert.AreEqual(2.75,result.Value);
+            Assert.AreEqual(2, result.Value);
         }
     }
 }
