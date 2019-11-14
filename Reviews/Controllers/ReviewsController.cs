@@ -102,13 +102,20 @@ namespace Reviews.Controllers
         [HttpGet]
         public async Task<ActionResult<double>> ProductAverage(int prodId)
         {
-            var avg = await _repository.GetProductAverage(prodId);
-            if (avg < 0)
+            var avg = 0;
+            var purchases = await _repository.GetReviewsByProduct(prodId);
+            if (purchases.Any())
             {
-                return NotFound();
+                foreach (var item in purchases)
+                {
+                    avg += item.Rating;
+                }
+
+                return (double)avg / (double)purchases.Count();
             }
 
-            return avg;
+            return NotFound();
+
         }
 
         /**/

@@ -15,7 +15,6 @@ namespace Reviews.Data
         void UpdateReview(Review review);
         void HideReview(int id);
         Task<IEnumerable<Review>> GetReviewsByProduct(int prodId);
-        Task<double> GetProductAverage(int prodId);
         Task Save();
     }
 }
