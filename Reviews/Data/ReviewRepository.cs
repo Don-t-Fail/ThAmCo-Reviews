@@ -38,7 +38,8 @@ namespace Reviews.Data
 
         public async Task<IEnumerable<Review>> GetReviewsByProduct(int prodId)
         {
-            return await _context.Review.Where(r => r.Purchase.ProductId == prodId && r.IsVisible).ToListAsync();
+            var reviews = await _context.Review.Where(r => r.Purchase.ProductId == prodId && r.IsVisible).ToListAsync();
+            return reviews;
         }
 
         public async void HideReview(int id)

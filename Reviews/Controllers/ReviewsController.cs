@@ -99,11 +99,12 @@ namespace Reviews.Controllers
             return _repository.GetAll().Result.Any(e => e.Id == id);
         }
 
-        [HttpGet]
-        public async Task<ActionResult<double>> ProductAverage(int prodId)
+        // GET: api/Reviews/ProdAvg?id=
+        [HttpGet("productaverage")]
+        public async Task<ActionResult<double>> ProductAverage(int id)
         {
             var avg = 0;
-            var purchases = await _repository.GetReviewsByProduct(prodId);
+            var purchases = await _repository.GetReviewsByProduct(id);
             if (purchases.Any())
             {
                 foreach (var item in purchases)
