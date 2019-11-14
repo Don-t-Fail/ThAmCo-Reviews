@@ -208,6 +208,66 @@ namespace Reviews.Controllers.Tests
         [TestMethod]
         public void PutReviewTest()
         {
+
+            //Arrange
+            var reviews = new List<Review>
+            {
+                new Review { Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 1},
+                new Review { Id = 2, Content = "Review No. 2", IsVisible = true, PurchaseId = 4, Rating = 5},
+                new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
+            };
+            var repo = new FakeReviewRepository(reviews);
+            var controller = new ReviewsController(repo);
+            var review = new Review { Id = 4, Content = "Review 4", IsVisible = true, PurchaseId = 2, Rating = 5 };
+
+            //Act
+            var result = controller.PutReview(4, review);
+
+            //Assert
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void PutReviewTest_NoIdMatch()
+        {
+
+            //Arrange
+            var reviews = new List<Review>
+            {
+                new Review { Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 1},
+                new Review { Id = 2, Content = "Review No. 2", IsVisible = true, PurchaseId = 4, Rating = 5},
+                new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
+            };
+            var repo = new FakeReviewRepository(reviews);
+            var controller = new ReviewsController(repo);
+            var review = new Review { Id = 4, Content = "Review 4", IsVisible = true, PurchaseId = 2, Rating = 5 };
+
+            //Act
+            var result = controller.PutReview(4, review);
+
+            //Assert
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void PutReviewTest_ReviewExists()
+        {
+
+            //Arrange
+            var reviews = new List<Review>
+            {
+                new Review { Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 1},
+                new Review { Id = 2, Content = "Review No. 2", IsVisible = true, PurchaseId = 4, Rating = 5},
+                new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
+            };
+            var repo = new FakeReviewRepository(reviews);
+            var controller = new ReviewsController(repo);
+            var review = new Review { Id = 4, Content = "Review 4", IsVisible = true, PurchaseId = 2, Rating = 5 };
+
+            //Act
+            var result = controller.PutReview(4, review);
+
+            //Assert
             Assert.Fail();
         }
 
