@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.EntityFrameworkCore;
 using Reviews.Data;
 using Reviews.Models;
@@ -35,36 +36,36 @@ namespace Reviews.Controllers
             return review;
         }
 
-        //// PUT: api/Reviews/5
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutReview(int id, Review review)
-        //{
-        //    if (id != review.Id)
-        //    {
-        //        return BadRequest();
-        //    }
+        // PUT: api/Reviews/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutReview(int id, Review review)
+        {
+            if (id != review.Id)
+            {
+                return BadRequest();
+            }
 
-        //    review.Id = id;
-        //    _repository.InsertReview(review);
+            review.Id = id;
+            _repository.InsertReview(review);
 
-        //    try
-        //    {
-        //        _repository.Save();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!ReviewExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+            try
+            {
+                await _repository.Save();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ReviewExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
 
         // POST: api/Reviews
         [HttpPost]
@@ -96,6 +97,18 @@ namespace Reviews.Controllers
         private bool ReviewExists(int id)
         {
             return _repository.GetAll().Result.Any(e => e.Id == id);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<double>> ProductAverage(int prodId)
+        {
+            var avg = await _repository.GetProductAverage(prodId);
+            if (avg < 0)
+            {
+                return NotFound();
+            }
+
+            return avg;
         }
 
         /**/

@@ -45,9 +45,25 @@ namespace Reviews.Data
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Review>> GetReviewsByProduct(int prodId)
+        public async Task<IEnumerable<Review>> GetReviewsByProduct(int prodId)
         {
-            throw new NotImplementedException();
+            return await Task.FromResult(_reviews.Where(r => r.Purchase.ProductId == prodId).ToList());
+        }
+        public async Task<double> GetProductAverage(int prodId)
+        {
+            var avg = 0;
+            var purchases = await GetReviewsByProduct(prodId);
+            if (purchases.Any())
+            {
+                foreach (var item in purchases)
+                {
+                    avg += item.Rating;
+                }
+
+                return (double)avg / (double)purchases.Count();
+            }
+
+            return -1;
         }
 
         public Task Save()

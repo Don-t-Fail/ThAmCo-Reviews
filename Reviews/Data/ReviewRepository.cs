@@ -38,6 +38,23 @@ namespace Reviews.Data
             return await _context.Review.Where(p => p.Purchase.ProductId == prodId).ToListAsync();
         }
 
+        public async Task<double> GetProductAverage(int prodId)
+        {
+            var avg = 0;
+            var purchases = await GetReviewsByProduct(prodId);
+            if (purchases.Any())
+            {
+                foreach (var item in purchases)
+                {
+                    avg += item.Rating;
+                }
+
+                return (double)avg / (double)purchases.Count();
+            }
+
+            return -1;
+        }
+
         public void HideReview(int id)
         {
             throw new NotImplementedException();
