@@ -22,6 +22,32 @@ namespace Reviews.Controllers.Tests
             var reviews = new List<Review>
             {
                 new Review { Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 1},
+                new Review { Id = 2, Content = "Review No. 2", IsVisible = true, PurchaseId = 4, Rating = 5},
+                new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
+            };
+            var repo = new FakeReviewRepository(reviews);
+            var controller = new ReviewsController(repo);
+            var id = 2;
+
+            //Act
+            var result = await controller.GetReview(id);
+
+            //Assert
+            Assert.AreEqual(id, result.Value.Id);
+            Assert.AreEqual(reviews[id - 1].Id, result.Value.Id);
+            Assert.AreEqual(reviews[id - 1].Content, result.Value.Content);
+            Assert.AreEqual(reviews[id - 1].IsVisible, result.Value.IsVisible);
+            Assert.AreEqual(reviews[id - 1].PurchaseId, result.Value.PurchaseId);
+            Assert.AreEqual(reviews[id - 1].Rating, result.Value.Rating);
+        }
+
+        [TestMethod]
+        public async Task GetReviewTestAsync_Hidden()
+        {
+            //Arrange
+            var reviews = new List<Review>
+            {
+                new Review { Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 1},
                 new Review { Id = 2, Content = "Review No. 2", IsVisible = false, PurchaseId = 4, Rating = 5},
                 new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
             };
@@ -39,6 +65,30 @@ namespace Reviews.Controllers.Tests
             Assert.AreEqual(reviews[id - 1].IsVisible, result.Value.IsVisible);
             Assert.AreEqual(reviews[id - 1].PurchaseId, result.Value.PurchaseId);
             Assert.AreEqual(reviews[id - 1].Rating, result.Value.Rating);
+
+        }
+
+        [TestMethod]
+        public async Task GetReviewTestAsync_NotExists()
+        {
+            //Arrange
+            var reviews = new List<Review>
+            {
+                new Review { Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 1},
+                new Review { Id = 2, Content = "Review No. 2", IsVisible = false, PurchaseId = 4, Rating = 5},
+                new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
+            };
+            var repo = new FakeReviewRepository(reviews);
+            var controller = new ReviewsController(repo);
+            var id = 42;
+
+            //Act
+            var result = await controller.GetReview(id);
+
+            //Assert
+            //Non-Existing review not found
+            Assert.IsInstanceOfType(result.Result, typeof(NotFoundResult));
+
         }
 
         [TestMethod]
