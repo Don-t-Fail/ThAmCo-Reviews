@@ -113,16 +113,18 @@ namespace Reviews.Controllers
 
         /**/
 
-        //// GET: api/Reviews?ProdId={id}
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Review>>> GetReviewProduct(int prodId)
-        //{
-        //    var reviews = await _repository.GetReviewsByProduct(prodId);
-        //    if (reviews.Any())
-        //    {
-        //        return Task.FromResult(reviews);
-        //    }
-        //    return NotFound();
-        //}
+        // GET: api/Reviews?ProdId={id}
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Review>>> GetReviewProduct(int prodId)
+        {
+            //var reviews = await _repository.GetReviewsByProduct(prodId);
+            //if (reviews.Any())
+            //{
+            //    return reviews;
+            //}
+
+            //return NotFound();
+            return BadRequest("Method Not Implemented")
+        }
     }
 }

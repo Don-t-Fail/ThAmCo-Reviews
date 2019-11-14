@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Reviews.Models;
 
@@ -37,7 +38,7 @@ namespace Reviews.Data
 
         public async Task<IEnumerable<Review>> GetReviewsByProduct(int prodId)
         {
-            return await _context.Review.Where(p => p.Purchase.ProductId == prodId).ToListAsync();
+            return await _context.Review.Where(r => r.Purchase.ProductId == prodId).ToListAsync();
         }
 
         public async Task<double> GetProductAverage(int prodId)
@@ -57,9 +58,16 @@ namespace Reviews.Data
             return -1;
         }
 
-        public void HideReview(int id)
+        public async void HideReview(int id)
         {
-            throw new NotImplementedException();
+            // TODO - Implement checking account here for permissions
+            var review = await _context.Review.Where(r => r.Id == id).FirstOrDefaultAsync();
+            if (review != null)
+            {
+                review.IsVisible = false;
+                await Save();
+            }
+
         }
 
         public void InsertReview(Review review)
