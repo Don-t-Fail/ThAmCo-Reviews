@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.EntityFrameworkCore;
 using Reviews.Data;
 using Reviews.Models;
@@ -99,21 +100,15 @@ namespace Reviews.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<int>> ProductAverage(int prodId)
+        public async Task<ActionResult<double>> ProductAverage(int prodId)
         {
-            var avg = 0;
-            var purchases = await _repository.GetReviewsByProduct(prodId);
-            if (purchases.Any())
+            var avg = await _repository.GetProductAverage(prodId);
+            if (avg < 0)
             {
-                foreach (var item in purchases)
-                {
-                    avg += item.Rating;
-                }
-
-                return avg / purchases.Count();
+                return NotFound();
             }
 
-            return NotFound();
+            return avg;
         }
 
         /**/
