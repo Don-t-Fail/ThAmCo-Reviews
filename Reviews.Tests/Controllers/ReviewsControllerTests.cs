@@ -77,6 +77,7 @@ namespace Reviews.Controllers.Tests
             Assert.AreEqual(2.75,result.Value);
         }
 
+        [TestMethod]
         public async Task ProductAverageTestAsync_Hidden()
         {
             //Arrange
