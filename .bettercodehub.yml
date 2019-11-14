@@ -2,3 +2,7 @@ component_depth: 2
 languages:
 - csharp
 - javascript
+exclude:
+- /Reviews/wwwroot/.*
+- /Reviews/bin/.*
+- /Reviews/obj/.*
