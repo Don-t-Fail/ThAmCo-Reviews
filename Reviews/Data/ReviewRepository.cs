@@ -45,6 +45,8 @@ namespace Reviews.Data
         {
             var avg = 0;
             var purchases = await GetReviewsByProduct(prodId);
+            //Filter removed/hidden reviews
+            purchases = purchases.Where(p => p.IsVisible);
             if (purchases.Any())
             {
                 foreach (var item in purchases)
