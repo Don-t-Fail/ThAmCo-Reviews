@@ -18,9 +18,11 @@ namespace Reviews.Data
             _context = context;
         }
 
-        public void DeleteReview(int id)
+        public async void DeleteReview(int id)
         {
-            throw new NotImplementedException();
+            // TODO - Possible Improvement - Passing review object directly from controller
+            var review = await _context.Review.FirstOrDefaultAsync(r => r.Id == id);
+            _context.Review.Remove(review);
         }
 
         public async Task<IEnumerable<Review>> GetAll()
