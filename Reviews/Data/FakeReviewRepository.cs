@@ -27,12 +27,13 @@ namespace Reviews.Data
 
         public void InsertReview(Review review)
         {
-            throw new NotImplementedException();
+            _reviews.Append(review);
         }
 
         public void DeleteReview(int id)
         {
-            throw new NotImplementedException();
+            var target = _reviews.FirstOrDefault(r => r.Id == id);
+            _reviews.ToList().Remove(target);
         }
 
         public void UpdateReview(Review review)
