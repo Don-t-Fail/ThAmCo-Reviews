@@ -208,7 +208,6 @@ namespace Reviews.Controllers.Tests
         [TestMethod]
         public async Task PutReviewTest()
         {
-
             //Arrange
             var reviews = new List<Review>
             {
@@ -221,6 +220,7 @@ namespace Reviews.Controllers.Tests
             var review = new Review { Id = 4, Content = "Review 4", IsVisible = true, PurchaseId = 2, Rating = 5 };
 
             //Act
+            // TODO - Fix NullPointerException
             var result = await controller.PutReview(4, review);
             
             //Assert
@@ -265,6 +265,7 @@ namespace Reviews.Controllers.Tests
             var review = new Review { Id = 4, Content = "Review 4", IsVisible = true, PurchaseId = 2, Rating = 5 };
 
             //Act
+            // TODO - Fix NullPointerException
             var result = await controller.PutReview(4, review);
 
             //Assert
@@ -396,7 +397,7 @@ namespace Reviews.Controllers.Tests
             var result = await controller.GetReviewProduct(prodId);
 
             //Assert
-            Assert.IsInstanceOfType(result,typeof(NotFoundResult));
+            Assert.IsInstanceOfType(result.Result,typeof(NotFoundResult));
         }
     }
 }

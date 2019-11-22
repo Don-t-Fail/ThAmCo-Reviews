@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,7 +28,7 @@ namespace Reviews.Data
 
         public void InsertReview(Review review)
         {
-            _reviews.Append(review);
+            _reviews = _reviews.Concat(new[] {review});
         }
 
         public void DeleteReview(int id)
@@ -53,7 +54,7 @@ namespace Reviews.Data
 
         public Task Save()
         {
-            throw new NotImplementedException();
+            return null;
         }
     }
 }
