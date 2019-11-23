@@ -4,5 +4,4 @@ dotnet: 2.2.207
 solution: Review.sln
 script:
  - dotnet restore
- - dotnet test
   
