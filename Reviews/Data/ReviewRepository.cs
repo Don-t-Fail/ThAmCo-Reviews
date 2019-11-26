@@ -23,7 +23,8 @@ namespace Reviews.Data
         {
             // TODO - Possible Improvement - Passing review object directly from controller
             var review = await _context.Review.FirstOrDefaultAsync(r => r.Id == id);
-            _context.Review.Remove(review);
+            review.IsVisible = false;
+            _context.Review.Update(review);
         }
 
         public async Task<IEnumerable<Review>> GetAll()
