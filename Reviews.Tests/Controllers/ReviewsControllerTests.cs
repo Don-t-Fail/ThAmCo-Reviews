@@ -279,12 +279,6 @@ namespace Reviews.Controllers.Tests
         }
 
         [TestMethod]
-        public void DeleteReviewTest()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod]
         public async Task GetReviewProductTest()
         {
             //Arrange
@@ -398,6 +392,33 @@ namespace Reviews.Controllers.Tests
 
             //Assert
             Assert.IsInstanceOfType(result.Result,typeof(NotFoundResult));
+        }
+
+
+        [TestMethod]
+        public async void DeleteReviewTest()
+        {
+            var reviews = new List<Review>
+            {
+                //Arrange
+                new Review
+                {
+                    Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 1
+                },
+                new Review
+                {
+                    Id = 2, Content = "Review No. 2", IsVisible = true, PurchaseId = 4, Rating = 5
+                }
+            };
+            var repo = new FakeReviewRepository(reviews);
+            var controller = new ReviewsController(repo);
+            var reviewId = 1;
+
+            //Act
+            await controller.DeleteReview(reviewId);
+
+            //Assert
+            Assert.Equals(false,reviews.Find(r => r.Id == 1).IsVisible);
         }
     }
 }
