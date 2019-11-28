@@ -92,7 +92,7 @@ namespace Reviews.Controllers.Tests
         }
 
         [TestMethod]
-        public async Task ProductAverageTestAsync()
+        public async Task ProductAverageTest()
         {
             //Arrange
             var reviews = new List<Review>
@@ -126,7 +126,7 @@ namespace Reviews.Controllers.Tests
             var result = await controller.ProductAverage(prodId);
 
             //Assert
-            Assert.AreEqual(2.75, result.Value);
+            Assert.AreEqual(3, result.Value);
         }
 
         [TestMethod]
