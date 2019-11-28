@@ -6,3 +6,4 @@ exclude:
 - /Reviews/wwwroot/.*
 - /Reviews/bin/.*
 - /Reviews/obj/.*
+- /Reviews/Data/Migrations
