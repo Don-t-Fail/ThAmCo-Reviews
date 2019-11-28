@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Reviews.Data;
 using Reviews.Models;
 
@@ -16,10 +17,12 @@ namespace Reviews.Controllers
     public class ReviewsController : ControllerBase
     {
         private readonly IReviewRepository _repository;
+        private readonly ILogger<ReviewsController> _logger;
 
-        public ReviewsController(IReviewRepository reviewRepository)
+        public ReviewsController(IReviewRepository reviewRepository, ILogger<ReviewsController> logger)
         {
             _repository = reviewRepository;
+            _logger = logger;
         }
 
         // GET: api/Reviews/5

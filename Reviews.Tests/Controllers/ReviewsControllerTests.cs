@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging.Abstractions;
 using Reviews.Data;
 using Reviews.Models;
 
@@ -26,7 +27,7 @@ namespace Reviews.Controllers.Tests
                 new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo);
+            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
             var id = 2;
 
             //Act
@@ -52,7 +53,7 @@ namespace Reviews.Controllers.Tests
                 new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo);
+            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
             var id = 2;
 
             //Act
@@ -79,7 +80,7 @@ namespace Reviews.Controllers.Tests
                 new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo);
+            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
             var id = 42;
 
             //Act
@@ -119,7 +120,7 @@ namespace Reviews.Controllers.Tests
                 }}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo);
+            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
             var prodId = 1;
 
             //Act
@@ -157,7 +158,7 @@ namespace Reviews.Controllers.Tests
                 }}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo);
+            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
             var prodId = 1;
 
             //Act
@@ -195,7 +196,7 @@ namespace Reviews.Controllers.Tests
                 }}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo);
+            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
             var prodId = 73;
 
             //Act
@@ -229,7 +230,7 @@ namespace Reviews.Controllers.Tests
                 }
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo);
+            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
             var prodId = 1;
 
             //Act
@@ -250,7 +251,7 @@ namespace Reviews.Controllers.Tests
                 new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo);
+            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
             var review = new Review { Id = 4, Content = "Review 4", IsVisible = true, PurchaseId = 2, Rating = 5 };
 
             //Act
@@ -273,7 +274,7 @@ namespace Reviews.Controllers.Tests
                 new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo);
+            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
             var review = new Review { Id = 4, Content = "Review 4", IsVisible = true, PurchaseId = 2, Rating = 5 };
 
             //Act
@@ -295,7 +296,7 @@ namespace Reviews.Controllers.Tests
                 new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo);
+            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
             var review = new Review { Id = 4, Content = "Review 4", IsVisible = true, PurchaseId = 2, Rating = 5 };
 
             //Act
@@ -340,13 +341,11 @@ namespace Reviews.Controllers.Tests
                 }}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo);
+            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
             var prodId = 1;
 
             //Act
             var result = await controller.GetReviewProduct(prodId);
-            
-
 
             //Assert
             Assert.AreEqual(reviews.Where(r => r.Purchase.ProductId == prodId && r.IsVisible),result.Value);
@@ -380,7 +379,7 @@ namespace Reviews.Controllers.Tests
                 }}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo);
+            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
             var prodId = 1;
 
             //Act
@@ -418,7 +417,7 @@ namespace Reviews.Controllers.Tests
                 }}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo);
+            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
             var prodId = 37;
 
             //Act
@@ -445,7 +444,7 @@ namespace Reviews.Controllers.Tests
                 }
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo);
+            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
             var reviewId = 1;
 
             //Act
