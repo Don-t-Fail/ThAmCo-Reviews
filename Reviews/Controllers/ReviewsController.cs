@@ -111,9 +111,7 @@ namespace Reviews.Controllers
                 {
                     avg += item.Rating;
                 }
-                //avg = Math.Round(avg / purchases.Count(), 1);
                 return Math.Round((avg / purchases.Count()) * 2, MidpointRounding.AwayFromZero) / 2;
-                //return avg = Math.Round(avg / purchases.Count(), 1);
             }
 
             return NotFound();
