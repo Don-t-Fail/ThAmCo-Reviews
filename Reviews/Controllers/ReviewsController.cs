@@ -99,30 +99,39 @@ namespace Reviews.Controllers
             return _repository.GetAll().Result.Any(e => e.Id == id);
         }
 
-        [HttpGet]
-        public async Task<ActionResult<double>> ProductAverage(int prodId)
+        // GET: api/Reviews/ProdAvg?id=
+        [HttpGet("productaverage")]
+        public async Task<ActionResult<double>> ProductAverage(int id)
         {
-            var avg = await _repository.GetProductAverage(prodId);
-            if (avg < 0)
+            var avg = 0;
+            var purchases = await _repository.GetReviewsByProduct(id);
+            if (purchases.Any())
             {
-                return NotFound();
+                foreach (var item in purchases)
+                {
+                    avg += item.Rating;
+                }
+
+                return (double)avg / (double)purchases.Count();
             }
 
-            return avg;
+            return NotFound();
+
         }
 
         /**/
 
-        //// GET: api/Reviews?ProdId={id}
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<Review>>> GetReviewProduct(int prodId)
-        //{
-        //    var reviews = await _repository.GetReviewsByProduct(prodId);
-        //    if (reviews.Any())
-        //    {
-        //        return Task.FromResult(reviews);
-        //    }
-        //    return NotFound();
-        //}
+        // GET: api/Reviews?ProdId={id}
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Review>>> GetReviewProduct(int prodId)
+        {
+            var reviews = await _repository.GetReviewsByProduct(prodId);
+            if (reviews.Any())
+            {
+                return Ok(reviews);
+            }
+
+            return NotFound();
+        }
     }
 }

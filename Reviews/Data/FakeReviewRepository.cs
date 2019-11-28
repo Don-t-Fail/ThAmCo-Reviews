@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,12 +28,13 @@ namespace Reviews.Data
 
         public void InsertReview(Review review)
         {
-            throw new NotImplementedException();
+            _reviews = _reviews.Concat(new[] {review});
         }
 
         public void DeleteReview(int id)
         {
-            throw new NotImplementedException();
+            var target = _reviews.FirstOrDefault(r => r.Id == id);
+            _reviews.ToList().Remove(target);
         }
 
         public void UpdateReview(Review review)
@@ -47,28 +49,12 @@ namespace Reviews.Data
 
         public async Task<IEnumerable<Review>> GetReviewsByProduct(int prodId)
         {
-            return await Task.FromResult(_reviews.Where(r => r.Purchase.ProductId == prodId).ToList());
-        }
-        public async Task<double> GetProductAverage(int prodId)
-        {
-            var avg = 0;
-            var purchases = await GetReviewsByProduct(prodId);
-            if (purchases.Any())
-            {
-                foreach (var item in purchases)
-                {
-                    avg += item.Rating;
-                }
-
-                return (double)avg / (double)purchases.Count();
-            }
-
-            return -1;
+            return await Task.FromResult(_reviews.Where(r => r.Purchase.ProductId == prodId && r.IsVisible).ToList());
         }
 
         public Task Save()
         {
-            throw new NotImplementedException();
+            return null;
         }
     }
 }

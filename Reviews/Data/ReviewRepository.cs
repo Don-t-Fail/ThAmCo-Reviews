@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Reviews.Models;
 
@@ -18,9 +19,12 @@ namespace Reviews.Data
             _context = context;
         }
 
-        public void DeleteReview(int id)
+        public async void DeleteReview(int id)
         {
-            throw new NotImplementedException();
+            // TODO - Possible Improvement - Passing review object directly from controller
+            var review = await _context.Review.FirstOrDefaultAsync(r => r.Id == id);
+            review.IsVisible = false;
+            _context.Review.Update(review);
         }
 
         public async Task<IEnumerable<Review>> GetAll()
@@ -35,29 +39,20 @@ namespace Reviews.Data
 
         public async Task<IEnumerable<Review>> GetReviewsByProduct(int prodId)
         {
-            return await _context.Review.Where(p => p.Purchase.ProductId == prodId).ToListAsync();
+            var reviews = await _context.Review.Where(r => r.Purchase.ProductId == prodId && r.IsVisible).ToListAsync();
+            return reviews;
         }
 
-        public async Task<double> GetProductAverage(int prodId)
+        public async void HideReview(int id)
         {
-            var avg = 0;
-            var purchases = await GetReviewsByProduct(prodId);
-            if (purchases.Any())
+            // TODO - Implement checking account here for permissions
+            var review = await _context.Review.Where(r => r.Id == id).FirstOrDefaultAsync();
+            if (review != null)
             {
-                foreach (var item in purchases)
-                {
-                    avg += item.Rating;
-                }
-
-                return (double)avg / (double)purchases.Count();
+                review.IsVisible = false;
+                await Save();
             }
 
-            return -1;
-        }
-
-        public void HideReview(int id)
-        {
-            throw new NotImplementedException();
         }
 
         public void InsertReview(Review review)
