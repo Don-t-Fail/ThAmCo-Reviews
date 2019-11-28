@@ -92,7 +92,7 @@ namespace Reviews.Controllers.Tests
         }
 
         [TestMethod]
-        public async Task ProductAverageTestAsync()
+        public async Task ProductAverageTest()
         {
             //Arrange
             var reviews = new List<Review>
@@ -126,11 +126,11 @@ namespace Reviews.Controllers.Tests
             var result = await controller.ProductAverage(prodId);
 
             //Assert
-            Assert.AreEqual(2.75, result.Value);
+            Assert.AreEqual(3, result.Value);
         }
 
         [TestMethod]
-        public async Task ProductAverageTestAsync_Hidden()
+        public async Task ProductAverageTest_Hidden()
         {
             //Arrange
             var reviews = new List<Review>
@@ -203,6 +203,40 @@ namespace Reviews.Controllers.Tests
 
             //Assert
             Assert.IsInstanceOfType(result.Result, typeof(NotFoundResult));
+        }
+
+        [TestMethod]
+        public async Task ProducAverageTest_OneReview()
+        {
+            //Arrange
+            var reviews = new List<Review>
+            {
+                new Review
+                {
+                    Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 1, Purchase =
+                        new Purchase
+                        {
+                            AccountId = 1, Id = 1, ProductId = 1
+                        }
+                },
+                new Review
+                {
+                    Id = 2, Content = "Review No. 2", IsVisible = false, PurchaseId = 4, Rating = 5, Purchase =
+                        new Purchase
+                        {
+                            AccountId = 2, Id = 4, ProductId = 2
+                        }
+                }
+            };
+            var repo = new FakeReviewRepository(reviews);
+            var controller = new ReviewsController(repo);
+            var prodId = 1;
+
+            //Act
+            var result = await controller.ProductAverage(prodId);
+
+            //Assert
+            Assert.AreEqual(1,result.Value);
         }
 
         [TestMethod]
