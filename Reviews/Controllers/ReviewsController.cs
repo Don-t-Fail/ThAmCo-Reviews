@@ -103,7 +103,7 @@ namespace Reviews.Controllers
         [HttpGet("productaverage")]
         public async Task<ActionResult<double>> ProductAverage(int id)
         {
-            var avg = 0;
+            double avg = 0;
             var purchases = await _repository.GetReviewsByProduct(id);
             if (purchases.Any())
             {
@@ -111,8 +111,9 @@ namespace Reviews.Controllers
                 {
                     avg += item.Rating;
                 }
-
-                return (double)avg / (double)purchases.Count();
+                //avg = Math.Round(avg / purchases.Count(), 1);
+                return Math.Round((avg / purchases.Count()) * 2, MidpointRounding.AwayFromZero) / 2;
+                //return avg = Math.Round(avg / purchases.Count(), 1);
             }
 
             return NotFound();
