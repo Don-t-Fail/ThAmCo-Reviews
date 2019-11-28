@@ -9,14 +9,14 @@ namespace Reviews.Data
 {
     public class FakeReviewRepository : IReviewRepository
     {
-        private IEnumerable<Review> _reviews;
+        private List<Review> _reviews;
 
-        public FakeReviewRepository(IEnumerable<Review> reviews)
+        public FakeReviewRepository(List<Review> reviews)
         {
             _reviews = reviews;
         }
 
-        public async Task<IEnumerable<Review>> GetAll()
+        public async Task<List<Review>> GetAll()
         {
             return await Task.FromResult(_reviews.ToList());
         }
@@ -28,13 +28,12 @@ namespace Reviews.Data
 
         public void InsertReview(Review review)
         {
-            _reviews = _reviews.Concat(new[] {review});
+            _reviews.Add(review);
         }
 
         public void DeleteReview(int id)
         {
-            var target = _reviews.FirstOrDefault(r => r.Id == id);
-            _reviews.ToList().Remove(target);
+            _reviews.Where(r => r.Id == id).ToList().ForEach(r => r.IsVisible = false);
         }
 
         public void UpdateReview(Review review)
@@ -47,7 +46,7 @@ namespace Reviews.Data
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Review>> GetReviewsByProduct(int prodId)
+        public async Task<List<Review>> GetReviewsByProduct(int prodId)
         {
             return await Task.FromResult(_reviews.Where(r => r.Purchase.ProductId == prodId && r.IsVisible).ToList());
         }

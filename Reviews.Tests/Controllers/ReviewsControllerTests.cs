@@ -430,7 +430,7 @@ namespace Reviews.Controllers.Tests
 
 
         [TestMethod]
-        public async void DeleteReviewTest()
+        public void DeleteReviewTest()
         {
             var reviews = new List<Review>
             {
@@ -449,10 +449,10 @@ namespace Reviews.Controllers.Tests
             var reviewId = 1;
 
             //Act
-            await controller.DeleteReview(reviewId);
+            controller.DeleteReview(reviewId);
 
             //Assert
-            Assert.Equals(false,reviews.Find(r => r.Id == 1).IsVisible);
+            Assert.IsFalse(reviews.Find(r => r.Id == 1).IsVisible);
         }
     }
 }

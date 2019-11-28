@@ -27,7 +27,7 @@ namespace Reviews.Data
             _context.Review.Update(review);
         }
 
-        public async Task<IEnumerable<Review>> GetAll()
+        public async Task<List<Review>> GetAll()
         {
             return await _context.Review.ToListAsync();
         }
@@ -37,7 +37,7 @@ namespace Reviews.Data
             return await _context.Review.Where(r => r.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Review>> GetReviewsByProduct(int prodId)
+        public async Task<List<Review>> GetReviewsByProduct(int prodId)
         {
             var reviews = await _context.Review.Where(r => r.Purchase.ProductId == prodId && r.IsVisible).ToListAsync();
             return reviews;
