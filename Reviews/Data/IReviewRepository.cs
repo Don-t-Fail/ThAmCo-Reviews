@@ -13,8 +13,6 @@ namespace Reviews.Data
         void InsertReview(Review review);
         void DeleteReview(int id);
         void UpdateReview(Review review);
-        // TODO - Review "HideReview"
-        void HideReview(int id);
         Task<List<Review>> GetReviewsByProduct(int prodId);
         Task Save();
     }

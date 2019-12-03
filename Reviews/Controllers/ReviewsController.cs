@@ -125,15 +125,15 @@ namespace Reviews.Controllers
 
         // GET: api/Reviews?ProdId={id}
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Review>>> GetReviewProduct(int prodId)
+        public async Task<IEnumerable<Review>> GetReviewProduct(int prodId)
         {
             var reviews = await _repository.GetReviewsByProduct(prodId);
             if (reviews.Any())
             {
-                return Ok(reviews);
+                return reviews;
             }
 
-            return NotFound();
+            return null;
         }
     }
 }
