@@ -33,7 +33,7 @@ namespace Reviews.Data
 
         public void DeleteReview(int id)
         {
-            _reviews.Where(r => r.Id == id).ToList().ForEach(r => r.IsVisible = false);
+            _reviews.FirstOrDefault(r => r.Id == id).IsVisible = false;
         }
 
         public void UpdateReview(Review review)
@@ -41,7 +41,7 @@ namespace Reviews.Data
             throw new NotImplementedException();
         }
 
-        public void HideReview(int id)
+        public Task HideReview(int id)
         {
             throw new NotImplementedException();
         }
@@ -53,7 +53,7 @@ namespace Reviews.Data
 
         public Task Save()
         {
-            return null;
+            return Task.CompletedTask;
         }
     }
 }
