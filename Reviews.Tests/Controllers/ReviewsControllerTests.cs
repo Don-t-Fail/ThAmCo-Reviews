@@ -304,13 +304,28 @@ namespace Reviews.Controllers.Tests
             var result = await controller.PutReview(4, review);
 
             //Assert
-            Assert.IsInstanceOfType(result,typeof(NotFoundResult));
+            Assert.IsInstanceOfType(result,typeof(NoContentResult));
         }
 
         [TestMethod]
-        public void PostReviewTest()
+        public async Task PostReviewTest_CreateSuccess()
         {
-            Assert.Fail();
+            var reviews = new List<Review>
+            {
+                new Review {Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 1}
+            };
+            var repo = new FakeReviewRepository(reviews);
+            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var newReview = new Review
+                {Id = 2, IsVisible = true, Content = "This is a new review", PurchaseId = 2, Rating = 3};
+
+            // Act
+            await controller.PostReview(newReview);
+            var expected = await controller.GetReview(2);
+
+            //Assert
+            Assert.AreEqual(expected.Value, reviews.Find(r => r.Id == newReview.Id));
+
         }
 
         [TestMethod]
@@ -346,9 +361,10 @@ namespace Reviews.Controllers.Tests
 
             //Act
             var result = await controller.GetReviewProduct(prodId);
+            var expected = reviews.Where(r => r.Purchase.ProductId == prodId && r.IsVisible).ToList();
 
             //Assert
-            Assert.AreEqual(reviews.Where(r => r.Purchase.ProductId == prodId && r.IsVisible),result.Value);
+            Assert.IsTrue(result.SequenceEqual(expected));
         }
 
         [TestMethod]
@@ -384,9 +400,10 @@ namespace Reviews.Controllers.Tests
 
             //Act
             var result = await controller.GetReviewProduct(prodId);
+            var expected = reviews.Where(r => r.Purchase.ProductId == prodId && r.IsVisible).ToList();
 
             //Assert
-            Assert.IsInstanceOfType(result, typeof(OkObjectResult));
+            Assert.IsTrue(result.SequenceEqual(expected));
         }
 
         [TestMethod]
@@ -424,12 +441,12 @@ namespace Reviews.Controllers.Tests
             var result = await controller.GetReviewProduct(prodId);
 
             //Assert
-            Assert.IsInstanceOfType(result.Result,typeof(NotFoundResult));
+            Assert.IsNull(result);
         }
 
 
         [TestMethod]
-        public void DeleteReviewTest()
+        public async Task DeleteReviewTest()
         {
             var reviews = new List<Review>
             {
@@ -448,7 +465,7 @@ namespace Reviews.Controllers.Tests
             var reviewId = 1;
 
             //Act
-            controller.DeleteReview(reviewId);
+            await controller.DeleteReview(reviewId);
 
             //Assert
             Assert.IsFalse(reviews.Find(r => r.Id == 1).IsVisible);
