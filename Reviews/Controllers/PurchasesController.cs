@@ -26,14 +26,14 @@ namespace Reviews.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Purchase>>> GetPurchase()
         {
-            return await _context.Purchase.ToListAsync();
+            return await _repository.GetAll();
         }
 
         // GET: api/Purchases/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Purchase>> GetPurchase(int id)
         {
-            var purchase = await _context.Purchase.FindAsync(id);
+            var purchase = await _repository.GetPurchase(id);
 
             if (purchase == null)
             {
@@ -52,15 +52,15 @@ namespace Reviews.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(purchase).State = EntityState.Modified;
+            _repository.UpdatePurchase(purchase);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _repository.Save();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PurchaseExists(id))
+                if (! await PurchaseExists(id))
                 {
                     return NotFound();
                 }
@@ -77,8 +77,8 @@ namespace Reviews.Controllers
         [HttpPost]
         public async Task<ActionResult<Purchase>> PostPurchase(Purchase purchase)
         {
-            _context.Purchase.Add(purchase);
-            await _context.SaveChangesAsync();
+            _repository.InsertPurchase(purchase);
+            await _repository.Save();
 
             return CreatedAtAction("GetPurchase", new { id = purchase.Id }, purchase);
         }
@@ -87,21 +87,21 @@ namespace Reviews.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Purchase>> DeletePurchase(int id)
         {
-            var purchase = await _context.Purchase.FindAsync(id);
+            var purchase = await _repository.GetPurchase(id);
             if (purchase == null)
             {
                 return NotFound();
             }
 
-            _context.Purchase.Remove(purchase);
-            await _context.SaveChangesAsync();
+            _repository.DeletePurchase(id);
+            await _repository.Save();
 
             return purchase;
         }
 
-        private bool PurchaseExists(int id)
+        private async Task<bool> PurchaseExists(int id)
         {
-            return _context.Purchase.Any(e => e.Id == id);
+            return await _repository.GetPurchase(id) != null;
         }
     }
 }
