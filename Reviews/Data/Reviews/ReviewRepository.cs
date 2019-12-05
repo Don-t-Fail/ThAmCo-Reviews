@@ -43,18 +43,6 @@ namespace Reviews.Data
             return reviews;
         }
 
-        public async void HideReview(int id)
-        {
-            // TODO - Implement checking account here for permissions
-            var review = await _context.Review.Where(r => r.Id == id).FirstOrDefaultAsync();
-            if (review != null)
-            {
-                review.IsVisible = false;
-                await Save();
-            }
-
-        }
-
         public void InsertReview(Review review)
         {
             _context.Review.Add(review);
