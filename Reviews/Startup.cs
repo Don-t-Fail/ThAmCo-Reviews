@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
 using Polly;
 using Reviews.Data;
+using Reviews.Data.Purchases;
 
 namespace Reviews
 {
@@ -56,6 +57,7 @@ namespace Reviews
                     p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
 
             services.AddScoped<IReviewRepository, ReviewRepository>();
+            services.AddScoped<IPurchaseRepository, PurchaseRepository>();
 
         }
 

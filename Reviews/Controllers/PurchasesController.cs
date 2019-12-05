@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Reviews.Data;
+using Reviews.Data.Purchases;
 using Reviews.Models;
 
 namespace Reviews.Controllers
@@ -14,11 +15,11 @@ namespace Reviews.Controllers
     [ApiController]
     public class PurchasesController : ControllerBase
     {
-        private readonly ReviewDbContext _context;
+        private readonly IPurchaseRepository _repository;
 
-        public PurchasesController(ReviewDbContext context)
+        public PurchasesController(IPurchaseRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         // GET: api/Purchases
