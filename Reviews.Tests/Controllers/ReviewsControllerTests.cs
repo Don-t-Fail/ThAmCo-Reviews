@@ -66,7 +66,6 @@ namespace Reviews.Controllers.Tests
             Assert.AreEqual(reviews[id - 1].IsVisible, result.Value.IsVisible);
             Assert.AreEqual(reviews[id - 1].PurchaseId, result.Value.PurchaseId);
             Assert.AreEqual(reviews[id - 1].Rating, result.Value.Rating);
-
         }
 
         [TestMethod]
@@ -89,7 +88,6 @@ namespace Reviews.Controllers.Tests
             //Assert
             //Non-Existing review not found
             Assert.IsInstanceOfType(result.Result, typeof(NotFoundResult));
-
         }
 
         [TestMethod]
@@ -265,7 +263,6 @@ namespace Reviews.Controllers.Tests
         [TestMethod]
         public async Task PutReviewTest_NoIdMatch()
         {
-
             //Arrange
             var reviews = new List<Review>
             {
@@ -325,7 +322,6 @@ namespace Reviews.Controllers.Tests
 
             //Assert
             Assert.AreEqual(expected.Value, reviews.Find(r => r.Id == newReview.Id));
-
         }
 
         [TestMethod]
@@ -443,8 +439,7 @@ namespace Reviews.Controllers.Tests
             //Assert
             Assert.IsNull(result);
         }
-
-
+        
         [TestMethod]
         public async Task DeleteReviewTest()
         {
