@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Reviews.Data;
 using Reviews.Models;
 
-namespace Reviews.Controllers.Tests
+namespace Reviews.Tests.Controllers
 {
     [TestClass]
     public class ReviewsControllerTests
@@ -284,7 +284,6 @@ namespace Reviews.Controllers.Tests
         [TestMethod]
         public async Task PutReviewTest_ReviewExists()
         {
-
             //Arrange
             var reviews = new List<Review>
             {
