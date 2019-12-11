@@ -25,6 +25,26 @@ steps:
     projects: '**/*Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
+- task: Docker@2
+  displayName: 'Logging in to Docker hub'
+  inputs:
+    containerRegistry: 'DockerHub'
+    command: 'login'
+
+- task: Docker@2
+  displayName: 'Creating docker image'
+  inputs:
+    command: 'build'
+    repository: 'dcurrey/thamco-reviews'
+    Dockerfile: 'Reviews/Dockerfile'
+
+- task: Docker@2
+  displayName: 'Pushing to DockerHub'
+  inputs:
+    containerRegistry: 'DockerHub'
+    repository: 'dcurrey/thamco-reviews'
+    command: 'push'
+
 - task: DotNetCoreCLI@2
   displayName: 'Publishing $(buildConfiguration)'
   inputs:
