@@ -36,7 +36,7 @@ steps:
   inputs:
     command: 'build'
     repository: 'dcurrey/thamco-reviews'
-    Dockerfile: 'Reviews/Dockerfile'    
+    Dockerfile: 'Reviews/Dockerfile'
 
 - task: Docker@2
   displayName: 'Pushing to DockerHub'
