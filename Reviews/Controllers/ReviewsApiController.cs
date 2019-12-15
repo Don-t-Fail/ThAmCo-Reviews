@@ -14,12 +14,12 @@ namespace Reviews.Controllers
 {
     [Route("api/reviews")]
     [ApiController]
-    public class ReviewsAPIController : ControllerBase
+    public class ReviewsApiController : ControllerBase
     {
         private readonly IReviewRepository _repository;
-        private readonly ILogger<ReviewsAPIController> _logger;
+        private readonly ILogger<ReviewsApiController> _logger;
 
-        public ReviewsAPIController(IReviewRepository reviewRepository, ILogger<ReviewsAPIController> logger)
+        public ReviewsApiController(IReviewRepository reviewRepository, ILogger<ReviewsApiController> logger)
         {
             _repository = reviewRepository;
             _logger = logger;
