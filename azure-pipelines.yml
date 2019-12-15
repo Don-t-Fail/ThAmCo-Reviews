@@ -44,6 +44,7 @@ steps:
   inputs:
     containerRegistry: 'DockerHub'
     repository: 'dcurrey/thamco-reviews'
+    tags: 'reviewslatest'
     command: 'push'
 
 - task: DotNetCoreCLI@2
