@@ -1,15 +1,13 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Reviews.Controllers;
+using Reviews.Data;
+using Reviews.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging.Abstractions;
-using Reviews.Data;
-using Reviews.Models;
 
 namespace Reviews.Tests.Controllers
 {
@@ -27,7 +25,7 @@ namespace Reviews.Tests.Controllers
                 new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var id = 2;
 
             //Act
@@ -53,7 +51,7 @@ namespace Reviews.Tests.Controllers
                 new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var id = 2;
 
             //Act
@@ -79,7 +77,7 @@ namespace Reviews.Tests.Controllers
                 new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var id = 42;
 
             //Act
@@ -118,7 +116,7 @@ namespace Reviews.Tests.Controllers
                 }}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var prodId = 1;
 
             //Act
@@ -156,7 +154,7 @@ namespace Reviews.Tests.Controllers
                 }}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var prodId = 1;
 
             //Act
@@ -194,7 +192,7 @@ namespace Reviews.Tests.Controllers
                 }}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var prodId = 73;
 
             //Act
@@ -228,14 +226,14 @@ namespace Reviews.Tests.Controllers
                 }
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var prodId = 1;
 
             //Act
             var result = await controller.ProductAverage(prodId);
 
             //Assert
-            Assert.AreEqual(1,result.Value);
+            Assert.AreEqual(1, result.Value);
         }
 
         [TestMethod]
@@ -249,13 +247,13 @@ namespace Reviews.Tests.Controllers
                 new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var review = new Review { Id = 4, Content = "Review 4", IsVisible = true, PurchaseId = 2, Rating = 5 };
 
             //Act
             // TODO - Fix NullPointerException
             var result = await controller.PutReview(4, review);
-            
+
             //Assert
             Assert.AreEqual(reviews.FirstOrDefault(r => r.Id == 4), review);
         }
@@ -271,14 +269,14 @@ namespace Reviews.Tests.Controllers
                 new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var review = new Review { Id = 4, Content = "Review 4", IsVisible = true, PurchaseId = 2, Rating = 5 };
 
             //Act
             var result = await controller.PutReview(5, review);
 
             //Assert
-            Assert.IsInstanceOfType(result,typeof(BadRequestResult));
+            Assert.IsInstanceOfType(result, typeof(BadRequestResult));
         }
 
         [TestMethod]
@@ -292,7 +290,7 @@ namespace Reviews.Tests.Controllers
                 new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var review = new Review { Id = 4, Content = "Review 4", IsVisible = true, PurchaseId = 2, Rating = 5 };
 
             //Act
@@ -300,7 +298,7 @@ namespace Reviews.Tests.Controllers
             var result = await controller.PutReview(4, review);
 
             //Assert
-            Assert.IsInstanceOfType(result,typeof(NoContentResult));
+            Assert.IsInstanceOfType(result, typeof(NoContentResult));
         }
 
         [TestMethod]
@@ -311,9 +309,9 @@ namespace Reviews.Tests.Controllers
                 new Review {Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 1}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var newReview = new Review
-                {Id = 2, IsVisible = true, Content = "This is a new review", PurchaseId = 2, Rating = 3};
+            { Id = 2, IsVisible = true, Content = "This is a new review", PurchaseId = 2, Rating = 3 };
 
             // Act
             await controller.PostReview(newReview);
@@ -351,7 +349,7 @@ namespace Reviews.Tests.Controllers
                 }}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var prodId = 1;
 
             //Act
@@ -390,7 +388,7 @@ namespace Reviews.Tests.Controllers
                 }}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var prodId = 1;
 
             //Act
@@ -429,7 +427,7 @@ namespace Reviews.Tests.Controllers
                 }}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var prodId = 37;
 
             //Act
@@ -438,7 +436,7 @@ namespace Reviews.Tests.Controllers
             //Assert
             Assert.IsNull(result);
         }
-        
+
         [TestMethod]
         public async Task DeleteReviewTest()
         {
@@ -455,7 +453,7 @@ namespace Reviews.Tests.Controllers
                 }
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var reviewId = 1;
 
             //Act

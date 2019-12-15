@@ -1,17 +1,13 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Reviews.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.EntityFrameworkCore;
-using Reviews.Models;
 
 namespace Reviews.Data
 {
     public class ReviewRepository : IReviewRepository
-
     {
-
         private readonly ReviewDbContext _context;
 
         public ReviewRepository(ReviewDbContext context)
