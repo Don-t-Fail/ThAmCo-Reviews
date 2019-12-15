@@ -27,7 +27,7 @@ namespace Reviews.Tests.Controllers
                 new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var id = 2;
 
             //Act
@@ -53,7 +53,7 @@ namespace Reviews.Tests.Controllers
                 new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var id = 2;
 
             //Act
@@ -79,7 +79,7 @@ namespace Reviews.Tests.Controllers
                 new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var id = 42;
 
             //Act
@@ -118,7 +118,7 @@ namespace Reviews.Tests.Controllers
                 }}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var prodId = 1;
 
             //Act
@@ -156,7 +156,7 @@ namespace Reviews.Tests.Controllers
                 }}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var prodId = 1;
 
             //Act
@@ -194,7 +194,7 @@ namespace Reviews.Tests.Controllers
                 }}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var prodId = 73;
 
             //Act
@@ -228,7 +228,7 @@ namespace Reviews.Tests.Controllers
                 }
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var prodId = 1;
 
             //Act
@@ -249,7 +249,7 @@ namespace Reviews.Tests.Controllers
                 new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var review = new Review { Id = 4, Content = "Review 4", IsVisible = true, PurchaseId = 2, Rating = 5 };
 
             //Act
@@ -271,7 +271,7 @@ namespace Reviews.Tests.Controllers
                 new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var review = new Review { Id = 4, Content = "Review 4", IsVisible = true, PurchaseId = 2, Rating = 5 };
 
             //Act
@@ -292,7 +292,7 @@ namespace Reviews.Tests.Controllers
                 new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var review = new Review { Id = 4, Content = "Review 4", IsVisible = true, PurchaseId = 2, Rating = 5 };
 
             //Act
@@ -311,7 +311,7 @@ namespace Reviews.Tests.Controllers
                 new Review {Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 1}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var newReview = new Review
                 {Id = 2, IsVisible = true, Content = "This is a new review", PurchaseId = 2, Rating = 3};
 
@@ -351,7 +351,7 @@ namespace Reviews.Tests.Controllers
                 }}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var prodId = 1;
 
             //Act
@@ -390,7 +390,7 @@ namespace Reviews.Tests.Controllers
                 }}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var prodId = 1;
 
             //Act
@@ -429,7 +429,7 @@ namespace Reviews.Tests.Controllers
                 }}
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var prodId = 37;
 
             //Act
@@ -455,7 +455,7 @@ namespace Reviews.Tests.Controllers
                 }
             };
             var repo = new FakeReviewRepository(reviews);
-            var controller = new ReviewsController(repo, new NullLogger<ReviewsController>());
+            var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var reviewId = 1;
 
             //Act

@@ -12,14 +12,14 @@ using Reviews.Models;
 
 namespace Reviews.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/reviews")]
     [ApiController]
-    public class ReviewsController : ControllerBase
+    public class ReviewsAPIController : ControllerBase
     {
         private readonly IReviewRepository _repository;
-        private readonly ILogger<ReviewsController> _logger;
+        private readonly ILogger<ReviewsAPIController> _logger;
 
-        public ReviewsController(IReviewRepository reviewRepository, ILogger<ReviewsController> logger)
+        public ReviewsAPIController(IReviewRepository reviewRepository, ILogger<ReviewsAPIController> logger)
         {
             _repository = reviewRepository;
             _logger = logger;
