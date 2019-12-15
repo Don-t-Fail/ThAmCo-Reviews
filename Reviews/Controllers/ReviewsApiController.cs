@@ -116,10 +116,7 @@ namespace Reviews.Controllers
             }
 
             return NotFound();
-
         }
-
-        /**/
 
         // GET: api/Reviews?ProdId={id}
         [HttpGet]
