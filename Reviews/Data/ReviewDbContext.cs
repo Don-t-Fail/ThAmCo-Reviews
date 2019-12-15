@@ -33,7 +33,8 @@ namespace Reviews.Data
                     new Account { Id = 2, IsStaff = true},
                     new Account { Id = 3, IsStaff = false},
                     new Account { Id = 4, IsStaff = false },
-                    new Account { Id = 5, IsStaff = false }
+                    new Account { Id = 5, IsStaff = false },
+                    new Account { Id = 6, IsStaff = false }
                 );
 
                 builder.Entity<Purchase>().HasData(
@@ -42,7 +43,8 @@ namespace Reviews.Data
                     new Purchase { Id = 3, AccountId = 3, ProductId = 1},
                     new Purchase { Id = 4, AccountId = 4, ProductId = 1 },
                     new Purchase { Id = 5, AccountId = 3, ProductId = 3 },
-                    new Purchase { Id = 6, AccountId = 5, ProductId = 1 }
+                    new Purchase { Id = 6, AccountId = 5, ProductId = 1 },
+                    new Purchase { Id = 7, AccountId = 6, ProductId = 1 }
                 );
 
                 builder.Entity<Review>().HasData(
