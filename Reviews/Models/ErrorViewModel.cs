@@ -1,5 +1,3 @@
-using System;
-
 namespace Reviews.Models
 {
     public class ErrorViewModel

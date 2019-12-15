@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Reviews.Data;
 using Reviews.Data.Purchases;
 using Reviews.Models;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Reviews.Controllers
 {
@@ -39,7 +34,6 @@ namespace Reviews.Controllers
                 }
             }
             return BadRequest("Purchase ID is null or invalid");
-            
         }
 
         // POST: Reviews/Create

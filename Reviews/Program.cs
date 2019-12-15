@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Reviews.Data;
@@ -17,7 +11,6 @@ namespace Reviews
     {
         public static void Main(string[] args)
         {
-
             var host = CreateWebHostBuilder(args).Build();
 
             using (var scope = host.Services.CreateScope())
@@ -27,7 +20,7 @@ namespace Reviews
                 var context = services.GetRequiredService<ReviewDbContext>();
                 if (env.IsDevelopment())
                 {
-                    context.Database.EnsureDeleted();                    
+                    context.Database.EnsureDeleted();
                 }
                 context.Database.Migrate();
             }

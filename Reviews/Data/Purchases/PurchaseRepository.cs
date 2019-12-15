@@ -1,15 +1,13 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Reviews.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Reviews.Models;
 
 namespace Reviews.Data.Purchases
 {
     public class PurchaseRepository : IPurchaseRepository
     {
-
         private readonly ReviewDbContext _context;
 
         public PurchaseRepository(ReviewDbContext context)

@@ -1,10 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Reviews.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Hosting;
 
 namespace Reviews.Data
 {
@@ -29,18 +25,18 @@ namespace Reviews.Data
             {
                 //Seed Data
                 builder.Entity<Account>().HasData(
-                    new Account { Id = 1, IsStaff = false},
-                    new Account { Id = 2, IsStaff = true},
-                    new Account { Id = 3, IsStaff = false},
+                    new Account { Id = 1, IsStaff = false },
+                    new Account { Id = 2, IsStaff = true },
+                    new Account { Id = 3, IsStaff = false },
                     new Account { Id = 4, IsStaff = false },
                     new Account { Id = 5, IsStaff = false },
                     new Account { Id = 6, IsStaff = false }
                 );
 
                 builder.Entity<Purchase>().HasData(
-                    new Purchase { Id = 1, AccountId = 1, ProductId = 1},
-                    new Purchase { Id = 2, AccountId = 1, ProductId = 2},
-                    new Purchase { Id = 3, AccountId = 3, ProductId = 1},
+                    new Purchase { Id = 1, AccountId = 1, ProductId = 1 },
+                    new Purchase { Id = 2, AccountId = 1, ProductId = 2 },
+                    new Purchase { Id = 3, AccountId = 3, ProductId = 1 },
                     new Purchase { Id = 4, AccountId = 4, ProductId = 1 },
                     new Purchase { Id = 5, AccountId = 3, ProductId = 3 },
                     new Purchase { Id = 6, AccountId = 5, ProductId = 1 },
@@ -57,5 +53,5 @@ namespace Reviews.Data
                 );
             }
         }
-}
+    }
 }

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Reviews.Data;
 using Reviews.Data.Purchases;
 using Reviews.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Reviews.Controllers
 {
@@ -60,7 +56,7 @@ namespace Reviews.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (! await PurchaseExists(id))
+                if (!await PurchaseExists(id))
                 {
                     return NotFound();
                 }
