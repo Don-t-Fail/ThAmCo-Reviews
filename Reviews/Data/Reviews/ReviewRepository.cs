@@ -53,5 +53,11 @@ namespace Reviews.Data
         {
             await _context.SaveChangesAsync();
         }
+
+        public async Task<List<Review>> GetReviewsByAccount(int accId)
+        {
+            var reviews = await _context.Review.Where(r => r.Purchase.AccountId == accId).Include(r => r.Purchase.Account).ToListAsync();
+            return reviews;
+        }
     }
 }

@@ -12,6 +12,7 @@ namespace Reviews.Data
         void DeleteReview(int id);
         void UpdateReview(Review review);
         Task<List<Review>> GetReviewsByProduct(int prodId);
+        Task<List<Review>> GetReviewsByAccount(int accId);
         Task Save();
     }
 }
