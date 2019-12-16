@@ -54,5 +54,10 @@ namespace Reviews.Data
         {
             return Task.CompletedTask;
         }
+
+        public async Task<List<Review>> GetReviewsByAccount(int accId)
+        {
+            return await Task.FromResult(_reviews.Where(r => r.Purchase.AccountId == accId).ToList());
+        }
     }
 }
