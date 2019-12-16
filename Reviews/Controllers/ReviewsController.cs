@@ -5,6 +5,7 @@ using Reviews.Data.Purchases;
 using Reviews.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using Reviews.Models.ViewModels;
 
 namespace Reviews.Controllers
 {
@@ -51,6 +52,32 @@ namespace Reviews.Controllers
                 return await _repository.GetReview(review.Id);
             }
             return review;
+        }
+
+        // GET: Reviews/IndexAccount/5
+        public async Task<IActionResult> IndexAccount(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var reviews = await _repository.GetReviewsByAccount(id.Value);
+            var revData = reviews.Select
+            (
+                r => new ReviewAccountViewModel
+                {
+                    Id = r.Id,
+                    Content = r.Content,
+                    IsVisible = r.IsVisible,
+                    PurchaseId = r.PurchaseId,
+                    Purchase = r.Purchase,
+                    AccountId = r.Purchase.AccountId,
+                    ProductId = r.Purchase.ProductId,
+                    Rating = r.Rating
+                }
+            );
+            return View(revData.ToList());
         }
 
         private bool ReviewExists(int id)
