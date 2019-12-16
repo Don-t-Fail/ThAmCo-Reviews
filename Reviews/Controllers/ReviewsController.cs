@@ -5,6 +5,7 @@ using Reviews.Data.Purchases;
 using Reviews.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Reviews.Models.ViewModels;
 
 namespace Reviews.Controllers
@@ -83,6 +84,33 @@ namespace Reviews.Controllers
         private bool ReviewExists(int id)
         {
             return _repository.GetAll().Result.Any(e => e.Id == id);
+        }
+
+        // GET: Reviews/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var review = await _repository.GetReview(id.Value);
+            if (review == null)
+            {
+                return NotFound();
+            }
+
+            return View(review);
+        }
+
+        // POST: Reviews/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            _repository.DeleteReview(id);
+            await _repository.Save();
+            return RedirectToAction(nameof(IndexAccount));
         }
     }
 }
