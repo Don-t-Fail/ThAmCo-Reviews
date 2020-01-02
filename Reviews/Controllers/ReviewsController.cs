@@ -97,7 +97,6 @@ namespace Reviews.Controllers
         // GET: Reviews/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-
             if (id == null || id < 0)
             {
                 return BadRequest();
