@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Reviews.Data;
 using Reviews.Data.Purchases;
@@ -111,6 +113,37 @@ namespace Reviews.Controllers
             _repository.DeleteReview(id);
             await _repository.Save();
             return RedirectToAction(nameof(IndexAccount));
+        }
+
+        // GET: api/Reviews/ProdAvg?id=
+        [HttpGet("productaverage")]
+        public async Task<ActionResult<double>> ProductAverage(int id)
+        {
+            double avg = 0;
+            var purchases = await _repository.GetReviewsByProduct(id);
+            if (purchases.Any())
+            {
+                foreach (var item in purchases)
+                {
+                    avg += item.Rating;
+                }
+                return Math.Round((avg / purchases.Count()) * 2, MidpointRounding.AwayFromZero) / 2;
+            }
+
+            return NotFound();
+        }
+
+        // GET: api/Reviews?ProdId={id}
+        [HttpGet]
+        public async Task<IEnumerable<Review>> GetReviewProduct(int prodId)
+        {
+            var reviews = await _repository.GetReviewsByProduct(prodId);
+            if (reviews.Any())
+            {
+                return reviews;
+            }
+
+            return null;
         }
     }
 }
