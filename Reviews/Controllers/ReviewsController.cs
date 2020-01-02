@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Reviews.Data;
 using Reviews.Data.Purchases;
@@ -7,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Reviews.Models.ViewModels;
+using Reviews.Services;
 
 namespace Reviews.Controllers
 {
@@ -14,9 +17,9 @@ namespace Reviews.Controllers
     {
         private readonly IReviewRepository _repository;
         private readonly IPurchaseRepository _purchaseRepo;
-        private readonly ILogger<ReviewsApiController> _logger;
+        private readonly ILogger<ReviewsController> _logger;
 
-        public ReviewsController(IReviewRepository reviewRepository, IPurchaseRepository purchaseRepository, ILogger<ReviewsApiController> logger)
+        public ReviewsController(IReviewRepository reviewRepository, IPurchaseRepository purchaseRepository, ILogger<ReviewsController> logger)
         {
             _repository = reviewRepository;
             _logger = logger;
@@ -58,6 +61,11 @@ namespace Reviews.Controllers
         // GET: Reviews/IndexAccount/5
         public async Task<IActionResult> IndexAccount(int? id)
         {
+            if (id < 0)
+            {
+                return BadRequest();
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -89,9 +97,9 @@ namespace Reviews.Controllers
         // GET: Reviews/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            if (id == null || id < 0)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             var review = await _repository.GetReview(id.Value);
@@ -108,9 +116,80 @@ namespace Reviews.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (id == null || id < 0)
+            {
+                return BadRequest();
+            }
+
             _repository.DeleteReview(id);
             await _repository.Save();
             return RedirectToAction(nameof(IndexAccount));
+        }
+
+        // GET: api/Reviews/ProdAvg?id=
+        [HttpGet("productaverage")]
+        public async Task<ActionResult<double>> ProductAverage(int id)
+        {
+            if (id < 0)
+            {
+                return BadRequest();
+            }
+
+            double avg = 0;
+            var purchases = await _repository.GetReviewsByProduct(id);
+
+            if (purchases.Any())
+            {
+                foreach (var item in purchases)
+                {
+                    avg += item.Rating;
+                }
+                return Ok(Math.Round((avg / purchases.Count()) * 2, MidpointRounding.AwayFromZero) / 2);
+            }
+
+            return NotFound();
+        }
+
+        // GET: api/Reviews?ProdId={id}
+        [HttpGet]
+        public async Task<ActionResult<List<Review>>> GetReviewProduct(int prodId)
+        {
+            if (prodId < 0)
+            {
+                return BadRequest();
+            }
+
+            var reviews = await _repository.GetReviewsByProduct(prodId);
+            if (reviews.Any())
+            {
+                return Ok(reviews);
+            }
+
+            return NotFound();
+        }
+
+        // GET: Purchases/Details/5
+        public async Task<ActionResult<ReviewDetailsDto>> Details(int? id)
+        {
+            if (id == null || id < 0)
+            {
+                return BadRequest();
+            }
+
+            var review = await _repository.GetReview(id.Value);
+            if (review == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(new ReviewDetailsDto
+            {
+                Id = review.Id,
+                Content = review.Content,
+                PurchaseId = review.PurchaseId,
+                IsVisible = review.IsVisible,
+                Rating = review.Rating
+            });
         }
     }
 }
