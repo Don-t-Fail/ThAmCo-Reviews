@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Reviews.Models.ViewModels;
+using Reviews.Services;
 
 namespace Reviews.Controllers
 {
@@ -16,9 +17,9 @@ namespace Reviews.Controllers
     {
         private readonly IReviewRepository _repository;
         private readonly IPurchaseRepository _purchaseRepo;
-        private readonly ILogger<ReviewsApiController> _logger;
+        private readonly ILogger<ReviewsController> _logger;
 
-        public ReviewsController(IReviewRepository reviewRepository, IPurchaseRepository purchaseRepository, ILogger<ReviewsApiController> logger)
+        public ReviewsController(IReviewRepository reviewRepository, IPurchaseRepository purchaseRepository, ILogger<ReviewsController> logger)
         {
             _repository = reviewRepository;
             _logger = logger;
@@ -135,15 +136,44 @@ namespace Reviews.Controllers
 
         // GET: api/Reviews?ProdId={id}
         [HttpGet]
-        public async Task<IEnumerable<Review>> GetReviewProduct(int prodId)
+        public async Task<ActionResult<List<Review>>> GetReviewProduct(int prodId)
         {
+            if (prodId < 0)
+            {
+                return BadRequest();
+            }
+
             var reviews = await _repository.GetReviewsByProduct(prodId);
             if (reviews.Any())
             {
-                return reviews;
+                return Ok(reviews);
             }
 
-            return null;
+            return NotFound();
+        }
+
+        // GET: Purchases/Details/5
+        public async Task<ActionResult<ReviewDetailsDto>> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var review = await _repository.GetReview(id.Value);
+            if (review == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(new ReviewDetailsDto
+            {
+                Id = review.Id,
+                Content = review.Content,
+                PurchaseId = review.PurchaseId,
+                IsVisible = review.IsVisible,
+                Rating = review.Rating
+            });
         }
     }
 }

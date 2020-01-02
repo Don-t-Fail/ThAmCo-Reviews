@@ -22,7 +22,7 @@ namespace Reviews.Data
 
         public async Task<Review> GetReview(int id)
         {
-            return await Task.FromResult(_reviews.FirstOrDefault(r => r.Id == id));
+            return await Task.FromResult(_reviews.Where(r => r.IsVisible).FirstOrDefault(r => r.Id == id));
         }
 
         public void InsertReview(Review review)
