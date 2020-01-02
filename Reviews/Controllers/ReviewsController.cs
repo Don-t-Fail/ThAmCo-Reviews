@@ -61,6 +61,11 @@ namespace Reviews.Controllers
         // GET: Reviews/IndexAccount/5
         public async Task<IActionResult> IndexAccount(int? id)
         {
+            if (id < 0)
+            {
+                return BadRequest();
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -92,9 +97,10 @@ namespace Reviews.Controllers
         // GET: Reviews/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+
+            if (id == null || id < 0)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             var review = await _repository.GetReview(id.Value);
@@ -120,15 +126,21 @@ namespace Reviews.Controllers
         [HttpGet("productaverage")]
         public async Task<ActionResult<double>> ProductAverage(int id)
         {
+            if (id < 0)
+            {
+                return BadRequest();
+            }
+
             double avg = 0;
             var purchases = await _repository.GetReviewsByProduct(id);
+
             if (purchases.Any())
             {
                 foreach (var item in purchases)
                 {
                     avg += item.Rating;
                 }
-                return Math.Round((avg / purchases.Count()) * 2, MidpointRounding.AwayFromZero) / 2;
+                return Ok(Math.Round((avg / purchases.Count()) * 2, MidpointRounding.AwayFromZero) / 2);
             }
 
             return NotFound();
@@ -155,9 +167,9 @@ namespace Reviews.Controllers
         // GET: Purchases/Details/5
         public async Task<ActionResult<ReviewDetailsDto>> Details(int? id)
         {
-            if (id == null)
+            if (id == null || id < 0)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             var review = await _repository.GetReview(id.Value);

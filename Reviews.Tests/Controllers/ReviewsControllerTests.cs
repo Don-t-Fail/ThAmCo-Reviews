@@ -179,10 +179,15 @@ namespace Reviews.Tests.Controllers
             //Act
             var result = await controller.ProductAverage(prodId);
             var expected = await controller.GetReviewProduct(prodId);
-            var review = expected.Value.FirstOrDefault();
 
             //Assert
-            Assert.AreEqual(review.Rating, result.Value);
+            var objResult = result.Result as OkObjectResult;
+            Assert.IsNotNull(objResult);
+            var retResult = objResult.Value/* as Review*/;
+            Assert.IsNotNull(retResult);
+            double val = TestData.Reviews().FirstOrDefault(r => r.Purchase.Id == prodId).Rating;
+
+            Assert.AreEqual(val, retResult);
         }
 
         [TestMethod]
@@ -223,7 +228,7 @@ namespace Reviews.Tests.Controllers
             var expected = TestData.Reviews().Where(r => r.Purchase.ProductId == prodId && r.IsVisible).ToList();
 
             //Assert
-            Assert.IsInstanceOfType(result.Result, typeof(NotFoundResult));
+            Assert.IsInstanceOfType(result.Result, typeof(BadRequestResult));
         }
 
         [TestMethod]
@@ -239,7 +244,7 @@ namespace Reviews.Tests.Controllers
             var result = await controller.GetReviewProduct(prodId);
 
             //Assert
-            Assert.IsNull(result);
+            Assert.IsInstanceOfType(result.Result, typeof(NotFoundResult));
         }
 
         [TestMethod]
