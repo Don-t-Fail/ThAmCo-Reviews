@@ -87,6 +87,22 @@ namespace Reviews.Tests.Controllers
         }
 
         [TestMethod]
+        public async Task GetReviewDetails_OutOfBounds()
+        {
+            // Arrange
+            var repo = new FakeReviewRepository(TestData.Reviews());
+            var purchaseRepo = new FakePurchaseRepository(TestData.Purchases());
+            var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
+            var id = -9;
+
+            // Act
+            var result = await controller.Details(id);
+
+            // Assert
+            Assert.IsInstanceOfType(result.Result, typeof(BadRequestResult));
+        }
+
+        [TestMethod]
         public async Task GetReviewDetailsTestAsync_Hidden()
         {
             //Arrange
@@ -132,7 +148,12 @@ namespace Reviews.Tests.Controllers
             var result = await controller.ProductAverage(prodId);
 
             //Assert
-            Assert.AreEqual(4, result.Value);
+            Assert.IsNotNull(result);
+            var objResult = result.Result as OkObjectResult;
+            Assert.IsNotNull(objResult);
+            var res = objResult.Value;
+
+            Assert.AreEqual(Convert.ToDouble(4), res);
         }
 
         [TestMethod]
@@ -148,7 +169,28 @@ namespace Reviews.Tests.Controllers
             var result = await controller.ProductAverage(prodId);
 
             //Assert
-            Assert.AreEqual(2.5, result.Value);
+            Assert.IsNotNull(result);
+            var objResult = result.Result as OkObjectResult;
+            Assert.IsNotNull(objResult);
+            var res = objResult.Value;
+
+            Assert.AreEqual(2.5, res);
+        }
+
+        [TestMethod]
+        public async Task ProductAverage_OutOfBounds()
+        {
+            //Arrange
+            var repo = new FakeReviewRepository(TestData.Reviews());
+            var purchaseRepo = new FakePurchaseRepository(TestData.Purchases());
+            var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
+            var prodId = -9;
+
+            //Act
+            var result = await controller.ProductAverage(prodId);
+
+            //Assert
+            Assert.IsInstanceOfType(result.Result, typeof(BadRequestResult));
         }
 
         [TestMethod]
@@ -183,7 +225,7 @@ namespace Reviews.Tests.Controllers
             //Assert
             var objResult = result.Result as OkObjectResult;
             Assert.IsNotNull(objResult);
-            var retResult = objResult.Value/* as Review*/;
+            var retResult = objResult.Value;
             Assert.IsNotNull(retResult);
             double val = TestData.Reviews().FirstOrDefault(r => r.Purchase.Id == prodId).Rating;
 
@@ -215,6 +257,22 @@ namespace Reviews.Tests.Controllers
         }
 
         [TestMethod]
+        public async Task GetReviewProductTest_OutOfBounds()
+        {
+            // Arrange
+            var repo = new FakeReviewRepository(TestData.Reviews());
+            var purchaseRepo = new FakePurchaseRepository(TestData.Purchases());
+            var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
+            var prodId = -99;
+
+            // Act
+            var result = await controller.GetReviewProduct(prodId);
+
+            // Assert
+            Assert.IsInstanceOfType(result.Result, typeof(BadRequestResult));
+        }
+
+        [TestMethod]
         public async Task GetReviewProductTest_Hidden()
         {
             //Arrange
@@ -228,7 +286,7 @@ namespace Reviews.Tests.Controllers
             var expected = TestData.Reviews().Where(r => r.Purchase.ProductId == prodId && r.IsVisible).ToList();
 
             //Assert
-            Assert.IsInstanceOfType(result.Result, typeof(BadRequestResult));
+            Assert.IsInstanceOfType(result.Result, typeof(NotFoundResult));
         }
 
         [TestMethod]
@@ -262,6 +320,22 @@ namespace Reviews.Tests.Controllers
 
             // Assert
             Assert.IsInstanceOfType(review.Result, typeof(NotFoundResult));
+        }
+
+        [TestMethod]
+        public async Task DeleteReview_OutOfBounds()
+        {
+            // Arrange
+            var repo = new FakeReviewRepository(TestData.Reviews());
+            var purchaseRepo = new FakePurchaseRepository(TestData.Purchases());
+            var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
+            var reviewId = -5;
+
+            // Act
+            var result = await controller.DeleteConfirmed(reviewId);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(BadRequestResult));
         }
     }
 }
