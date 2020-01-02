@@ -14,17 +14,50 @@ namespace Reviews.Tests.Controllers
     [TestClass]
     public class ReviewsControllerTests
     {
+        private static class TestData
+        {
+            public static List<Review> Reviews() => new List<Review>
+            {
+                new Review { Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 2, Purchase = new Purchase
+                {
+                    AccountId = 1, Id = 1, ProductId = 1
+                }},
+                new Review { Id = 2, Content = "Review No. 2", IsVisible = false, PurchaseId = 4, Rating = 5, Purchase = new Purchase
+                {
+                    AccountId = 2, Id = 4, ProductId = 1
+                }},
+                new Review { Id = 4, Content = "Review No. 4", IsVisible = true, PurchaseId = 2, Rating = 3, Purchase = new Purchase
+                {
+                    AccountId = 1, Id = 2, ProductId = 1
+                }},
+                new Review { Id = 5, Content = "Review No. 5", IsVisible = true, PurchaseId = 3, Rating = 2, Purchase = new Purchase
+                {
+                    AccountId = 2, Id = 3, ProductId = 1
+                }},
+                new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 13, Rating = 5, Purchase = new Purchase
+                {
+                    AccountId = 3, ProductId = 75, Id =  13
+                }},
+                new Review { Id = 6, Content = "Review No. 6", IsVisible = true, PurchaseId = 14, Rating = 5, Purchase = new Purchase
+                {
+                    AccountId = 3, ProductId = 75, Id =  14
+                }},
+                new Review { Id = 7, Content = "Review No. 7", IsVisible = true, PurchaseId = 15, Rating = 2, Purchase = new Purchase
+                {
+                    AccountId = 3, ProductId = 75, Id =  15
+                }},
+                new Review { Id = 8, Content = "Review No. 8", IsVisible = true, PurchaseId = 16, Rating = 2, Purchase = new Purchase
+                {
+                    AccountId = 3, ProductId = 3, Id =  16
+                }}
+            };
+        }
+
         [TestMethod]
         public async Task GetReviewTestAsync()
         {
             //Arrange
-            var reviews = new List<Review>
-            {
-                new Review { Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 1},
-                new Review { Id = 2, Content = "Review No. 2", IsVisible = true, PurchaseId = 4, Rating = 5},
-                new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
-            };
-            var repo = new FakeReviewRepository(reviews);
+            var repo = new FakeReviewRepository(TestData.Reviews());
             var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var id = 2;
 
@@ -33,24 +66,18 @@ namespace Reviews.Tests.Controllers
 
             //Assert
             Assert.AreEqual(id, result.Value.Id);
-            Assert.AreEqual(reviews[id - 1].Id, result.Value.Id);
-            Assert.AreEqual(reviews[id - 1].Content, result.Value.Content);
-            Assert.AreEqual(reviews[id - 1].IsVisible, result.Value.IsVisible);
-            Assert.AreEqual(reviews[id - 1].PurchaseId, result.Value.PurchaseId);
-            Assert.AreEqual(reviews[id - 1].Rating, result.Value.Rating);
+            Assert.AreEqual(TestData.Reviews()[id - 1].Id, result.Value.Id);
+            Assert.AreEqual(TestData.Reviews()[id - 1].Content, result.Value.Content);
+            Assert.AreEqual(TestData.Reviews()[id - 1].IsVisible, result.Value.IsVisible);
+            Assert.AreEqual(TestData.Reviews()[id - 1].PurchaseId, result.Value.PurchaseId);
+            Assert.AreEqual(TestData.Reviews()[id - 1].Rating, result.Value.Rating);
         }
 
         [TestMethod]
         public async Task GetReviewTestAsync_Hidden()
         {
             //Arrange
-            var reviews = new List<Review>
-            {
-                new Review { Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 1},
-                new Review { Id = 2, Content = "Review No. 2", IsVisible = false, PurchaseId = 4, Rating = 5},
-                new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
-            };
-            var repo = new FakeReviewRepository(reviews);
+            var repo = new FakeReviewRepository(TestData.Reviews());
             var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var id = 2;
 
@@ -59,24 +86,18 @@ namespace Reviews.Tests.Controllers
 
             //Assert
             Assert.AreEqual(id, result.Value.Id);
-            Assert.AreEqual(reviews[id - 1].Id, result.Value.Id);
-            Assert.AreEqual(reviews[id - 1].Content, result.Value.Content);
-            Assert.AreEqual(reviews[id - 1].IsVisible, result.Value.IsVisible);
-            Assert.AreEqual(reviews[id - 1].PurchaseId, result.Value.PurchaseId);
-            Assert.AreEqual(reviews[id - 1].Rating, result.Value.Rating);
+            Assert.AreEqual(TestData.Reviews()[id - 1].Id, result.Value.Id);
+            Assert.AreEqual(TestData.Reviews()[id - 1].Content, result.Value.Content);
+            Assert.AreEqual(TestData.Reviews()[id - 1].IsVisible, result.Value.IsVisible);
+            Assert.AreEqual(TestData.Reviews()[id - 1].PurchaseId, result.Value.PurchaseId);
+            Assert.AreEqual(TestData.Reviews()[id - 1].Rating, result.Value.Rating);
         }
 
         [TestMethod]
         public async Task GetReviewTestAsync_NotExists()
         {
             //Arrange
-            var reviews = new List<Review>
-            {
-                new Review { Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 1},
-                new Review { Id = 2, Content = "Review No. 2", IsVisible = false, PurchaseId = 4, Rating = 5},
-                new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3}
-            };
-            var repo = new FakeReviewRepository(reviews);
+            var repo = new FakeReviewRepository(TestData.Reviews());
             var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var id = 42;
 
@@ -92,68 +113,22 @@ namespace Reviews.Tests.Controllers
         public async Task ProductAverageTest()
         {
             //Arrange
-            var reviews = new List<Review>
-            {
-                new Review { Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 1, Purchase = new Purchase
-                {
-                    AccountId = 1, Id = 1, ProductId = 1
-                }},
-                new Review { Id = 2, Content = "Review No. 2", IsVisible = true, PurchaseId = 4, Rating = 5, Purchase = new Purchase
-                {
-                    AccountId = 2, Id = 4, ProductId = 1
-                }},
-                new Review { Id = 4, Content = "Review No. 4", IsVisible = true, PurchaseId = 2, Rating = 3, Purchase = new Purchase
-                {
-                    AccountId = 1, Id = 2, ProductId = 1
-                }},
-                new Review { Id = 5, Content = "Review No. 5", IsVisible = true, PurchaseId = 3, Rating = 2, Purchase = new Purchase
-                {
-                    AccountId = 2, Id = 3, ProductId = 1
-                }},
-                new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3, Purchase = new Purchase
-                {
-                    AccountId = 3, ProductId = 4, Id =  12
-                }}
-            };
-            var repo = new FakeReviewRepository(reviews);
+            var repo = new FakeReviewRepository(TestData.Reviews());
             var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
-            var prodId = 1;
+            var prodId = 75;
 
             //Act
             var result = await controller.ProductAverage(prodId);
 
             //Assert
-            Assert.AreEqual(3, result.Value);
+            Assert.AreEqual(4, result.Value);
         }
 
         [TestMethod]
         public async Task ProductAverageTest_Hidden()
         {
             //Arrange
-            var reviews = new List<Review>
-            {
-                new Review { Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 1, Purchase = new Purchase
-                {
-                    AccountId = 1, Id = 1, ProductId = 1
-                }},
-                new Review { Id = 2, Content = "Review No. 2", IsVisible = false, PurchaseId = 4, Rating = 5, Purchase = new Purchase
-                {
-                    AccountId = 2, Id = 4, ProductId = 1
-                }},
-                new Review { Id = 4, Content = "Review No. 4", IsVisible = true, PurchaseId = 2, Rating = 3, Purchase = new Purchase
-                {
-                    AccountId = 1, Id = 2, ProductId = 1
-                }},
-                new Review { Id = 5, Content = "Review No. 5", IsVisible = false, PurchaseId = 3, Rating = 2, Purchase = new Purchase
-                {
-                    AccountId = 2, Id = 3, ProductId = 1
-                }},
-                new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3, Purchase = new Purchase
-                {
-                    AccountId = 3, ProductId = 4, Id =  12
-                }}
-            };
-            var repo = new FakeReviewRepository(reviews);
+            var repo = new FakeReviewRepository(TestData.Reviews());
             var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var prodId = 1;
 
@@ -161,39 +136,16 @@ namespace Reviews.Tests.Controllers
             var result = await controller.ProductAverage(prodId);
 
             //Assert
-            Assert.AreEqual(2, result.Value);
+            Assert.AreEqual(2.5, result.Value);
         }
 
         [TestMethod]
         public async Task ProductAverage_NotExists()
         {
             //Arrange
-            var reviews = new List<Review>
-            {
-                new Review { Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 1, Purchase = new Purchase
-                {
-                    AccountId = 1, Id = 1, ProductId = 1
-                }},
-                new Review { Id = 2, Content = "Review No. 2", IsVisible = false, PurchaseId = 4, Rating = 5, Purchase = new Purchase
-                {
-                    AccountId = 2, Id = 4, ProductId = 1
-                }},
-                new Review { Id = 4, Content = "Review No. 4", IsVisible = true, PurchaseId = 2, Rating = 3, Purchase = new Purchase
-                {
-                    AccountId = 1, Id = 2, ProductId = 1
-                }},
-                new Review { Id = 5, Content = "Review No. 5", IsVisible = false, PurchaseId = 3, Rating = 2, Purchase = new Purchase
-                {
-                    AccountId = 2, Id = 3, ProductId = 1
-                }},
-                new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3, Purchase = new Purchase
-                {
-                    AccountId = 3, ProductId = 4, Id =  12
-                }}
-            };
-            var repo = new FakeReviewRepository(reviews);
+            var repo = new FakeReviewRepository(TestData.Reviews());
             var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
-            var prodId = 73;
+            var prodId = 7000;
 
             //Act
             var result = await controller.ProductAverage(prodId);
@@ -203,37 +155,20 @@ namespace Reviews.Tests.Controllers
         }
 
         [TestMethod]
-        public async Task ProducAverageTest_OneReview()
+        public async Task ProductAverageTest_OneReview()
         {
             //Arrange
-            var reviews = new List<Review>
-            {
-                new Review
-                {
-                    Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 1, Purchase =
-                        new Purchase
-                        {
-                            AccountId = 1, Id = 1, ProductId = 1
-                        }
-                },
-                new Review
-                {
-                    Id = 2, Content = "Review No. 2", IsVisible = false, PurchaseId = 4, Rating = 5, Purchase =
-                        new Purchase
-                        {
-                            AccountId = 2, Id = 4, ProductId = 2
-                        }
-                }
-            };
-            var repo = new FakeReviewRepository(reviews);
+            var repo = new FakeReviewRepository(TestData.Reviews());
             var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
-            var prodId = 1;
+            var prodId = 3;
 
             //Act
             var result = await controller.ProductAverage(prodId);
+            var expected = await controller.GetReviewProduct(prodId);
+            var review = expected.FirstOrDefault();
 
             //Assert
-            Assert.AreEqual(1, result.Value);
+            Assert.AreEqual(review.Rating, result.Value);
         }
 
         [TestMethod]
@@ -325,36 +260,13 @@ namespace Reviews.Tests.Controllers
         public async Task GetReviewProductTest()
         {
             //Arrange
-            var reviews = new List<Review>
-            {
-                new Review { Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 1, Purchase = new Purchase
-                {
-                    AccountId = 1, Id = 1, ProductId = 1
-                }},
-                new Review { Id = 2, Content = "Review No. 2", IsVisible = true, PurchaseId = 4, Rating = 5, Purchase = new Purchase
-                {
-                    AccountId = 2, Id = 4, ProductId = 1
-                }},
-                new Review { Id = 4, Content = "Review No. 4", IsVisible = true, PurchaseId = 2, Rating = 3, Purchase = new Purchase
-                {
-                    AccountId = 1, Id = 2, ProductId = 1
-                }},
-                new Review { Id = 5, Content = "Review No. 5", IsVisible = true, PurchaseId = 3, Rating = 2, Purchase = new Purchase
-                {
-                    AccountId = 2, Id = 3, ProductId = 1
-                }},
-                new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3, Purchase = new Purchase
-                {
-                    AccountId = 3, ProductId = 4, Id =  12
-                }}
-            };
-            var repo = new FakeReviewRepository(reviews);
+            var repo = new FakeReviewRepository(TestData.Reviews());
             var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
-            var prodId = 1;
+            var prodId = 75;
 
             //Act
             var result = await controller.GetReviewProduct(prodId);
-            var expected = reviews.Where(r => r.Purchase.ProductId == prodId && r.IsVisible).ToList();
+            var expected = TestData.Reviews().Where(r => r.Purchase.ProductId == prodId && r.IsVisible).ToList();
 
             //Assert
             Assert.IsTrue(result.SequenceEqual(expected));
@@ -364,36 +276,13 @@ namespace Reviews.Tests.Controllers
         public async Task GetReviewProductTest_Hidden()
         {
             //Arrange
-            var reviews = new List<Review>
-            {
-                new Review { Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 1, Purchase = new Purchase
-                {
-                    AccountId = 1, Id = 1, ProductId = 1
-                }},
-                new Review { Id = 2, Content = "Review No. 2", IsVisible = true, PurchaseId = 4, Rating = 5, Purchase = new Purchase
-                {
-                    AccountId = 2, Id = 4, ProductId = 1
-                }},
-                new Review { Id = 4, Content = "Review No. 4", IsVisible = false, PurchaseId = 2, Rating = 3, Purchase = new Purchase
-                {
-                    AccountId = 1, Id = 2, ProductId = 1
-                }},
-                new Review { Id = 5, Content = "Review No. 5", IsVisible = true, PurchaseId = 3, Rating = 2, Purchase = new Purchase
-                {
-                    AccountId = 2, Id = 3, ProductId = 1
-                }},
-                new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3, Purchase = new Purchase
-                {
-                    AccountId = 3, ProductId = 4, Id =  12
-                }}
-            };
-            var repo = new FakeReviewRepository(reviews);
+            var repo = new FakeReviewRepository(TestData.Reviews());
             var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var prodId = 1;
 
             //Act
             var result = await controller.GetReviewProduct(prodId);
-            var expected = reviews.Where(r => r.Purchase.ProductId == prodId && r.IsVisible).ToList();
+            var expected = TestData.Reviews().Where(r => r.Purchase.ProductId == prodId && r.IsVisible).ToList();
 
             //Assert
             Assert.IsTrue(result.SequenceEqual(expected));
@@ -403,32 +292,9 @@ namespace Reviews.Tests.Controllers
         public async Task GetReviewProductTest_NotExists()
         {
             //Arrange
-            var reviews = new List<Review>
-            {
-                new Review { Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 1, Purchase = new Purchase
-                {
-                    AccountId = 1, Id = 1, ProductId = 1
-                }},
-                new Review { Id = 2, Content = "Review No. 2", IsVisible = true, PurchaseId = 4, Rating = 5, Purchase = new Purchase
-                {
-                    AccountId = 2, Id = 4, ProductId = 1
-                }},
-                new Review { Id = 4, Content = "Review No. 4", IsVisible = true, PurchaseId = 2, Rating = 3, Purchase = new Purchase
-                {
-                    AccountId = 1, Id = 2, ProductId = 1
-                }},
-                new Review { Id = 5, Content = "Review No. 5", IsVisible = true, PurchaseId = 3, Rating = 2, Purchase = new Purchase
-                {
-                    AccountId = 2, Id = 3, ProductId = 1
-                }},
-                new Review { Id = 3, Content = "Review No. 3", IsVisible = true, PurchaseId = 12, Rating = 3, Purchase = new Purchase
-                {
-                    AccountId = 3, ProductId = 4, Id =  12
-                }}
-            };
-            var repo = new FakeReviewRepository(reviews);
+            var repo = new FakeReviewRepository(TestData.Reviews());
             var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
-            var prodId = 37;
+            var prodId = 370;
 
             //Act
             var result = await controller.GetReviewProduct(prodId);
@@ -440,27 +306,17 @@ namespace Reviews.Tests.Controllers
         [TestMethod]
         public async Task DeleteReviewTest()
         {
-            var reviews = new List<Review>
-            {
-                //Arrange
-                new Review
-                {
-                    Id = 1, Content = "Review No. 1", IsVisible = true, PurchaseId = 1, Rating = 1
-                },
-                new Review
-                {
-                    Id = 2, Content = "Review No. 2", IsVisible = true, PurchaseId = 4, Rating = 5
-                }
-            };
-            var repo = new FakeReviewRepository(reviews);
+            // Arrange
+            var repo = new FakeReviewRepository(TestData.Reviews());
             var controller = new ReviewsApiController(repo, new NullLogger<ReviewsApiController>());
             var reviewId = 1;
 
-            //Act
+            // Act
             await controller.DeleteReview(reviewId);
+            var review = await controller.GetReview(reviewId);
 
-            //Assert
-            Assert.IsFalse(reviews.Find(r => r.Id == 1).IsVisible);
+            // Assert
+            Assert.IsFalse(review.Value.IsVisible);
         }
     }
 }
