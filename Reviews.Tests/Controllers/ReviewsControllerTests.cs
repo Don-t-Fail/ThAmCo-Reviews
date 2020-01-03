@@ -66,7 +66,7 @@ namespace Reviews.Tests.Controllers
         {
             //Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
-            var purchaseRepo = new FakePurchaseRepository(TestData.Purchases());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
             var id = 1;
 
@@ -91,7 +91,7 @@ namespace Reviews.Tests.Controllers
         {
             // Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
-            var purchaseRepo = new FakePurchaseRepository(TestData.Purchases());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
             var id = -9;
 
@@ -107,7 +107,7 @@ namespace Reviews.Tests.Controllers
         {
             //Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
-            var purchaseRepo = new FakePurchaseRepository(TestData.Purchases());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
             var id = 2;
 
@@ -123,7 +123,7 @@ namespace Reviews.Tests.Controllers
         {
             //Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
-            var purchaseRepo = new FakePurchaseRepository(TestData.Purchases());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
             var id = 42;
 
@@ -140,7 +140,7 @@ namespace Reviews.Tests.Controllers
         {
             //Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
-            var purchaseRepo = new FakePurchaseRepository(TestData.Purchases());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
             var prodId = 75;
 
@@ -161,7 +161,7 @@ namespace Reviews.Tests.Controllers
         {
             //Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
-            var purchaseRepo = new FakePurchaseRepository(TestData.Purchases());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
             var prodId = 1;
 
@@ -182,7 +182,7 @@ namespace Reviews.Tests.Controllers
         {
             //Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
-            var purchaseRepo = new FakePurchaseRepository(TestData.Purchases());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
             var prodId = -9;
 
@@ -198,7 +198,7 @@ namespace Reviews.Tests.Controllers
         {
             //Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
-            var purchaseRepo = new FakePurchaseRepository(TestData.Purchases());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
             var prodId = 7000;
 
@@ -214,7 +214,7 @@ namespace Reviews.Tests.Controllers
         {
             //Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
-            var purchaseRepo = new FakePurchaseRepository(TestData.Purchases());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
             var prodId = 3;
 
@@ -237,7 +237,7 @@ namespace Reviews.Tests.Controllers
         {
             // Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
-            var purchaseRepo = new FakePurchaseRepository(TestData.Purchases());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
             var prodId = 1;
 
@@ -261,7 +261,7 @@ namespace Reviews.Tests.Controllers
         {
             // Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
-            var purchaseRepo = new FakePurchaseRepository(TestData.Purchases());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
             var prodId = -99;
 
@@ -277,7 +277,7 @@ namespace Reviews.Tests.Controllers
         {
             //Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
-            var purchaseRepo = new FakePurchaseRepository(TestData.Purchases());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
             var prodId = 2;
 
@@ -294,7 +294,7 @@ namespace Reviews.Tests.Controllers
         {
             //Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
-            var purchaseRepo = new FakePurchaseRepository(TestData.Purchases());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
             var prodId = 370;
 
@@ -310,7 +310,7 @@ namespace Reviews.Tests.Controllers
         {
             // Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
-            var purchaseRepo = new FakePurchaseRepository(TestData.Purchases());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
             var reviewId = 1;
 
@@ -327,7 +327,7 @@ namespace Reviews.Tests.Controllers
         {
             // Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
-            var purchaseRepo = new FakePurchaseRepository(TestData.Purchases());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
             var reviewId = -5;
 
@@ -336,6 +336,12 @@ namespace Reviews.Tests.Controllers
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+        }
+
+        [TestMethod]
+        public async Task CreateReview_Success()
+        {
+
         }
     }
 }

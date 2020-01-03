@@ -6,6 +6,7 @@ using Reviews.Data;
 using Reviews.Data.Purchases;
 using Reviews.Models;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Reviews.Models.ViewModels;
@@ -16,14 +17,16 @@ namespace Reviews.Controllers
     public class ReviewsController : Controller
     {
         private readonly IReviewRepository _repository;
-        private readonly IPurchaseRepository _purchaseRepo;
+        private readonly IPurchaseService _purchaseServ;
         private readonly ILogger<ReviewsController> _logger;
 
-        public ReviewsController(IReviewRepository reviewRepository, IPurchaseRepository purchaseRepository, ILogger<ReviewsController> logger)
+        public HttpClient HttpClient { get; set; }
+
+        public ReviewsController(IReviewRepository reviewRepository, IPurchaseService purchaseService, ILogger<ReviewsController> logger)
         {
             _repository = reviewRepository;
             _logger = logger;
-            _purchaseRepo = purchaseRepository;
+            _purchaseServ = purchaseService;
         }
 
         // GET: Reviews/Create/5
@@ -31,7 +34,7 @@ namespace Reviews.Controllers
         {
             if (id != null && id > 0)
             {
-                var purchase = await _purchaseRepo.GetPurchase(id.Value);
+                var purchase = await _purchaseServ.GetPurchase(id.Value);
                 if (purchase != null)
                 {
                     ViewData["Purchase"] = purchase;
@@ -46,16 +49,15 @@ namespace Reviews.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<Review> Create([Bind("PurchaseId,IsVisible,Rating,Content")] Review review)
+        public async Task<IActionResult> Create([Bind("PurchaseId,IsVisible,Rating,Content")] Review review)
         {
             if (ModelState.IsValid)
             {
-                // TODO - Check if review already exists
                 _repository.InsertReview(review);
                 await _repository.Save();
-                return await _repository.GetReview(review.Id);
+                return Ok(await _repository.GetReview(review.Id));
             }
-            return review;
+            return BadRequest(review);
         }
 
         // GET: Reviews/IndexAccount/5

@@ -51,7 +51,7 @@ namespace Reviews
                     p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
 
             services.AddScoped<IReviewRepository, ReviewRepository>();
-            services.AddScoped<IPurchaseRepository, PurchaseRepository>();
+            services.AddScoped<IPurchaseService, PurchaseService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
