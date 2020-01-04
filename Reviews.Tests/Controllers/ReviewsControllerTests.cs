@@ -413,60 +413,143 @@ namespace Reviews.Tests.Controllers
         [TestMethod]
         public async Task IndexAccount_Success()
         {
+            // Arrange
+            var repo = new FakeReviewRepository(TestData.Reviews());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+
+            }
+            Assert.Fail("Test not created");
+        }
+
+        [TestMethod]
+        public async Task IndexAccount_OutOfBounds()
+        {
+            // Arrange
+            var repo = new FakeReviewRepository(TestData.Reviews());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+
+            }
+            Assert.Fail("Test not created");
+        }
+
+        [TestMethod]
+        public async Task IndexAccount_Null()
+        {
+            // Arrange
+            var repo = new FakeReviewRepository(TestData.Reviews());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+
+            }
+            Assert.Fail("Test not created");
+        }
+
+        [TestMethod]
+        public async Task IndexAccount_NotExists()
+        {
+            // Arrange
+            var repo = new FakeReviewRepository(TestData.Reviews());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+
+            }
             Assert.Fail("Test not created");
         }
 
         [TestMethod]
         public async Task CreateGet_Success()
         {
+            // Arrange
+            var repo = new FakeReviewRepository(TestData.Reviews());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+
+            }
+            Assert.Fail("Test not created");
+        }
+
+        [TestMethod]
+        public async Task CreateGet_Null()
+        {
+            // Arrange
+            var repo = new FakeReviewRepository(TestData.Reviews());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+
+            }
             Assert.Fail("Test not created");
         }
 
         [TestMethod]
         public async Task CreateGet_OutOfRange()
         {
+            // Arrange
+            var repo = new FakeReviewRepository(TestData.Reviews());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+
+            }
             Assert.Fail("Test not created");
         }
 
         [TestMethod]
         public async Task CreateGet_Exists()
         {
+            // Arrange
+            var repo = new FakeReviewRepository(TestData.Reviews());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+
+            }
             Assert.Fail("Test not created");
         }
 
         [TestMethod]
         public async Task DeleteGet_Success()
         {
+            // Arrange
+            var repo = new FakeReviewRepository(TestData.Reviews());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+
+            }
             Assert.Fail("Test not created");
         }
 
         [TestMethod]
         public async Task Create_Success()
         {
+            // Arrange
+            var repo = new FakeReviewRepository(TestData.Reviews());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+
+            }
             Assert.Fail("Test not created");
         }
 
         [TestMethod]
         public async Task Create_ModelInvalid()
         {
-            Assert.Fail("Test not created");
-        }
+            // Arrange
+            var repo = new FakeReviewRepository(TestData.Reviews());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
 
-        [TestMethod]
-        public async Task ReviewExists_ExistsSuccess()
-        {
-            Assert.Fail("Test not created");
-        }
-
-        [TestMethod]
-        public async Task ReviewExists_NotExistsSuccess()
-        {
-            Assert.Fail("Test not created");
-        }
-
-        [TestMethod]
-        public async Task ReviewExists_OutOfBounds()
-        {
+            }
             Assert.Fail("Test not created");
         }
     }

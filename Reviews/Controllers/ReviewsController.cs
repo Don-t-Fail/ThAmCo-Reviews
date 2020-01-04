@@ -118,7 +118,7 @@ namespace Reviews.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (id == null || id < 0)
+            if (id < 0)
             {
                 return BadRequest();
             }
