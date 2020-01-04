@@ -55,8 +55,6 @@ namespace Reviews.Data.Purchases
             return null;
         }
 
-
-
         public async Task<PurchaseDto> GetPurchase(int id)
         {
             var client = GetHttpClient("RetryAndBreak");
