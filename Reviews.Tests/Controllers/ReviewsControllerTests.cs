@@ -409,5 +409,65 @@ namespace Reviews.Tests.Controllers
                 Assert.IsInstanceOfType(result, typeof(BadRequestResult));
             }
         }
+
+        [TestMethod]
+        public async Task IndexAccount_Success()
+        {
+            Assert.Fail("Test not created");
+        }
+
+        [TestMethod]
+        public async Task CreateGet_Success()
+        {
+            Assert.Fail("Test not created");
+        }
+
+        [TestMethod]
+        public async Task CreateGet_OutOfRange()
+        {
+            Assert.Fail("Test not created");
+        }
+
+        [TestMethod]
+        public async Task CreateGet_Exists()
+        {
+            Assert.Fail("Test not created");
+        }
+
+        [TestMethod]
+        public async Task DeleteGet_Success()
+        {
+            Assert.Fail("Test not created");
+        }
+
+        [TestMethod]
+        public async Task Create_Success()
+        {
+            Assert.Fail("Test not created");
+        }
+
+        [TestMethod]
+        public async Task Create_ModelInvalid()
+        {
+            Assert.Fail("Test not created");
+        }
+
+        [TestMethod]
+        public async Task ReviewExists_ExistsSuccess()
+        {
+            Assert.Fail("Test not created");
+        }
+
+        [TestMethod]
+        public async Task ReviewExists_NotExistsSuccess()
+        {
+            Assert.Fail("Test not created");
+        }
+
+        [TestMethod]
+        public async Task ReviewExists_OutOfBounds()
+        {
+            Assert.Fail("Test not created");
+        }
     }
 }
