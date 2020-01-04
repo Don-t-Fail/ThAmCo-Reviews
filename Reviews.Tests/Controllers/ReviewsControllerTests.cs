@@ -1,9 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Moq.Protected;
+using Newtonsoft.Json;
 using Reviews.Controllers;
 using Reviews.Data;
+using Reviews.Data.Purchases;
 using Reviews.Models;
+using Reviews.Models.ViewModels;
+using Reviews.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +18,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Moq;
-using Moq.Protected;
-using Newtonsoft.Json;
-using Reviews.Data.Purchases;
-using Reviews.Models.ViewModels;
-using Reviews.Services;
 
 namespace Reviews.Tests.Controllers
 {
@@ -620,7 +619,7 @@ namespace Reviews.Tests.Controllers
                 Assert.IsNotNull(review);
                 var expected = TestData.Reviews().FirstOrDefault(r => r.Id == id);
 
-                Assert.AreEqual(expected.Id,review.Id);
+                Assert.AreEqual(expected.Id, review.Id);
                 Assert.AreEqual(expected.Content, review.Content);
                 Assert.AreEqual(expected.IsVisible, review.IsVisible);
                 Assert.AreEqual(expected.PurchaseId, review.PurchaseId);
@@ -696,14 +695,14 @@ namespace Reviews.Tests.Controllers
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
             {
-                var review = new Review {Content = "This is a test review", PurchaseId = 63, Rating = 3};
+                var review = new Review { Content = "This is a test review", PurchaseId = 63, Rating = 3 };
 
                 // Act
                 var result = await controller.Create(review);
 
                 // Assert
                 Assert.IsNotNull(result);
-                Assert.IsInstanceOfType(result,typeof(OkObjectResult));
+                Assert.IsInstanceOfType(result, typeof(OkObjectResult));
             }
         }
     }
