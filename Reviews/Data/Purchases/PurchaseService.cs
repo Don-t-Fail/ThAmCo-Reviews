@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Reviews.Models;
 using Reviews.Services;
 
 namespace Reviews.Data.Purchases
@@ -14,11 +15,13 @@ namespace Reviews.Data.Purchases
         private readonly IHttpClientFactory _clientFactory;
         private readonly IConfiguration _config;
         private readonly ILogger<PurchaseService> _logger;
+        private readonly ReviewDbContext _context;
 
         public HttpClient HttpClient { get; set; }
 
-        public PurchaseService(IHttpClientFactory clientFactory, IConfiguration config, ILogger<PurchaseService> logger)
+        public PurchaseService(ReviewDbContext context, IHttpClientFactory clientFactory, IConfiguration config, ILogger<PurchaseService> logger)
         {
+            _context = context;
             _clientFactory = clientFactory;
             _config = config;
             _logger = logger;
@@ -36,6 +39,16 @@ namespace Reviews.Data.Purchases
             if (resp.IsSuccessStatusCode)
             {
                 var purchases = await resp.Content.ReadAsAsync<List<PurchaseDto>>();
+
+                foreach (var purchase in purchases)
+                {
+                    if (!_context.Purchase.Any(p => p.Id == purchase.Id))
+                    {
+                        await _context.Purchase.AddAsync(new Purchase {ProductId = purchase.ProductId, AccountId = purchase.AccountId});
+                    }
+                }
+
+                await _context.SaveChangesAsync();
                 return purchases;
             }
 
@@ -55,6 +68,13 @@ namespace Reviews.Data.Purchases
             if (resp.IsSuccessStatusCode)
             {
                 var purchase = await resp.Content.ReadAsAsync<PurchaseDto>();
+
+                if (!_context.Purchase.Any(p => p.Id == purchase.Id))
+                {
+                    await _context.Purchase.AddAsync(new Purchase { ProductId = purchase.ProductId, AccountId = purchase.AccountId });
+                }
+
+                await _context.SaveChangesAsync();
                 return purchase;
             }
 
