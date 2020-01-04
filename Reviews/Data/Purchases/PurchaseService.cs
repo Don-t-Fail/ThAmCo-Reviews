@@ -15,6 +15,8 @@ namespace Reviews.Data.Purchases
         private readonly IConfiguration _config;
         private readonly ILogger<PurchaseService> _logger;
 
+        public HttpClient HttpClient { get; set; }
+
         public PurchaseService(IHttpClientFactory clientFactory, IConfiguration config, ILogger<PurchaseService> logger)
         {
             _clientFactory = clientFactory;
@@ -25,7 +27,7 @@ namespace Reviews.Data.Purchases
         public async Task<List<PurchaseDto>> GetAll()
         {
             var client = _clientFactory.CreateClient("RetryAndBreak");
-            client.BaseAddress = new Uri(_config["PurchasesUrl"]);
+            
 
             _logger.LogInformation("Contacting Purchasing Service");
 
@@ -40,9 +42,33 @@ namespace Reviews.Data.Purchases
             return null;
         }
 
+
+
         public async Task<PurchaseDto> GetPurchase(int id)
         {
-            throw new NotImplementedException();
+            var client = GetHttpClient("RetryAndBreak");
+
+            _logger.LogInformation("Contacting Purchase Service");
+
+            var resp = await client.GetAsync("purchases/details/"+id);
+
+            if (resp.IsSuccessStatusCode)
+            {
+                var purchase = await resp.Content.ReadAsAsync<PurchaseDto>();
+                return purchase;
+            }
+
+            return null;
+        }
+
+        private HttpClient GetHttpClient(string s)
+        {
+            if (_clientFactory == null && HttpClient != null) return HttpClient;
+
+            var client = _clientFactory.CreateClient(s);
+            client.BaseAddress = new Uri(_config["PurchasesUrl"]);
+
+            return client;
         }
     }
 }
