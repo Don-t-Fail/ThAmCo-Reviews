@@ -17,7 +17,6 @@ namespace Reviews.Data
 
         public async void DeleteReview(int id)
         {
-            // TODO - Possible Improvement - Passing review object directly from controller
             var review = await _context.Review.FirstOrDefaultAsync(r => r.Id == id);
             review.IsVisible = false;
             _context.Review.Update(review);

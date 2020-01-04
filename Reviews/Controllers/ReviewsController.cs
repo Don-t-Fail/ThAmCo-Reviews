@@ -51,7 +51,7 @@ namespace Reviews.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PurchaseId,IsVisible,Rating,Content")] Review review)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !ReviewExists(review.Id))
             {
                 _repository.InsertReview(review);
                 await _repository.Save();
