@@ -31,7 +31,7 @@ namespace Reviews.Data
                     new Account { Id = 4, IsStaff = false },
                     new Account { Id = 5, IsStaff = false },
                     new Account { Id = 6, IsStaff = false },
-                    new Account { Id = 42, IsStaff = false} // Test Account for use in controllers until login is implemented
+                    new Account { Id = 42, IsStaff = false } // Test Account for use in controllers until login is implemented
                 );
 
                 //builder.Entity<Purchase>().HasData(
