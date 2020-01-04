@@ -31,27 +31,27 @@ namespace Reviews.Data
                     new Account { Id = 4, IsStaff = false },
                     new Account { Id = 5, IsStaff = false },
                     new Account { Id = 6, IsStaff = false },
-                    new Account { Id = 7, IsStaff = false} // Test Account for use in controllers until login is implemented
+                    new Account { Id = 42, IsStaff = false} // Test Account for use in controllers until login is implemented
                 );
 
-                builder.Entity<Purchase>().HasData(
-                    new Purchase { Id = 1, AccountId = 1, ProductId = 1 },
-                    new Purchase { Id = 2, AccountId = 1, ProductId = 2 },
-                    new Purchase { Id = 3, AccountId = 3, ProductId = 1 },
-                    new Purchase { Id = 4, AccountId = 4, ProductId = 1 },
-                    new Purchase { Id = 5, AccountId = 3, ProductId = 3 },
-                    new Purchase { Id = 6, AccountId = 5, ProductId = 1 },
-                    new Purchase { Id = 7, AccountId = 6, ProductId = 1 }
-                );
+                //builder.Entity<Purchase>().HasData(
+                //    new Purchase { Id = 1, AccountId = 1, ProductId = 1 },
+                //    new Purchase { Id = 2, AccountId = 1, ProductId = 2 },
+                //    new Purchase { Id = 3, AccountId = 3, ProductId = 1 },
+                //    new Purchase { Id = 4, AccountId = 4, ProductId = 1 },
+                //    new Purchase { Id = 5, AccountId = 3, ProductId = 3 },
+                //    new Purchase { Id = 6, AccountId = 5, ProductId = 1 },
+                //    new Purchase { Id = 7, AccountId = 6, ProductId = 1 }
+                //);
 
-                builder.Entity<Review>().HasData(
-                    new Review { Id = 1, IsVisible = true, Rating = 5, Content = "This is a test review for product 1", PurchaseId = 1 },
-                    new Review { Id = 2, IsVisible = true, Rating = 2, Content = "This is a review for product 2", PurchaseId = 2 },
-                    new Review { Id = 3, IsVisible = true, Rating = 3, Content = "This is a test review for product 1", PurchaseId = 3 },
-                    new Review { Id = 4, IsVisible = false, Rating = 1, Content = "This is a test review for product 1", PurchaseId = 4 },
-                    new Review { Id = 5, IsVisible = true, Rating = 3, Content = "This is a test review for product 3", PurchaseId = 5 },
-                    new Review { Id = 6, IsVisible = true, Rating = 3, Content = "This is a test review for product 1", PurchaseId = 6 }
-                );
+                //builder.Entity<Review>().HasData(
+                //    new Review { Id = 1, IsVisible = true, Rating = 5, Content = "This is a test review for product 1", PurchaseId = 1 },
+                //    new Review { Id = 2, IsVisible = true, Rating = 2, Content = "This is a review for product 2", PurchaseId = 2 },
+                //    new Review { Id = 3, IsVisible = true, Rating = 3, Content = "This is a test review for product 1", PurchaseId = 3 },
+                //    new Review { Id = 4, IsVisible = false, Rating = 1, Content = "This is a test review for product 1", PurchaseId = 4 },
+                //    new Review { Id = 5, IsVisible = true, Rating = 3, Content = "This is a test review for product 3", PurchaseId = 5 },
+                //    new Review { Id = 6, IsVisible = true, Rating = 3, Content = "This is a test review for product 1", PurchaseId = 6 }
+                //);
             }
         }
     }
