@@ -17,6 +17,7 @@ using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
 using Reviews.Data.Purchases;
+using Reviews.Models.ViewModels;
 using Reviews.Services;
 
 namespace Reviews.Tests.Controllers
@@ -418,9 +419,37 @@ namespace Reviews.Tests.Controllers
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
             {
+                var id = 1;
 
+                // Act
+                var result = await controller.IndexAccount(id) as ViewResult;
+
+                // Assert
+                Assert.IsNotNull(result);
+                var index = result.Model as List<ReviewAccountViewModel>;
+                Assert.IsNotNull(index);
+                foreach (var review in index)
+                {
+                    var comp = TestData.Reviews().Select(r => new ReviewAccountViewModel
+                    {
+                        AccountId = r.Purchase.AccountId,
+                        Content = r.Content,
+                        Id = r.Id,
+                        IsVisible = r.IsVisible,
+                        ProductId = r.Purchase.ProductId,
+                        Purchase = r.Purchase,
+                        PurchaseId = r.PurchaseId,
+                        Rating = r.Rating
+                    }).FirstOrDefault(r => r.Id == review.Id);
+                    Assert.AreEqual(comp.AccountId, review.AccountId);
+                    Assert.AreEqual(comp.Content, review.Content);
+                    Assert.AreEqual(comp.Id, review.Id);
+                    Assert.AreEqual(comp.IsVisible, review.IsVisible);
+                    Assert.AreEqual(comp.ProductId, review.ProductId);
+                    Assert.AreEqual(comp.PurchaseId, review.PurchaseId);
+                    Assert.AreEqual(comp.Rating, review.Rating);
+                }
             }
-            Assert.Fail("Test not created");
         }
 
         [TestMethod]
@@ -431,9 +460,16 @@ namespace Reviews.Tests.Controllers
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
             {
+                var id = -9;
 
+                // Act
+                var result = await controller.IndexAccount(id);
+
+                // Assert
+                Assert.IsNotNull(result);
+                var objResult = result as BadRequestResult;
+                Assert.IsNotNull(objResult);
             }
-            Assert.Fail("Test not created");
         }
 
         [TestMethod]
@@ -444,9 +480,14 @@ namespace Reviews.Tests.Controllers
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
             {
+                // Act
+                var result = await controller.IndexAccount(null);
 
+                // Assert
+                Assert.IsNotNull(result);
+                var objResult = result as NotFoundResult;
+                Assert.IsNotNull(objResult);
             }
-            Assert.Fail("Test not created");
         }
 
         [TestMethod]
@@ -457,9 +498,16 @@ namespace Reviews.Tests.Controllers
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
             {
+                var id = 300;
 
+                // Act
+                var result = await controller.IndexAccount(300);
+
+                // Assert
+                Assert.IsNotNull(result);
+                var objResult = result as NotFoundResult;
+                Assert.IsNotNull(objResult);
             }
-            Assert.Fail("Test not created");
         }
 
         [TestMethod]
@@ -470,9 +518,27 @@ namespace Reviews.Tests.Controllers
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
             {
+                var id = 1;
 
+                // Act
+                var result = await controller.Create(id);
+
+                // Assert
+                Assert.IsNotNull(result);
+                var review = result as ViewResult;
+                Assert.IsNotNull(review);
+                var purchase = review.ViewData["purchase"];
+
+                var actual = purchase as PurchaseDto;
+                var tgt = TestData.Purchases().FirstOrDefault(p => p.Id == id);
+                Assert.AreEqual(tgt.Id, actual.Id);
+                Assert.AreEqual(tgt.AccountId, actual.AccountId);
+                Assert.AreEqual(tgt.AddressId, actual.AddressId);
+                Assert.AreEqual(tgt.OrderStatus, actual.OrderStatus);
+                Assert.AreEqual(tgt.ProductId, actual.ProductId);
+                Assert.AreEqual(tgt.Qty, actual.Qty);
+                Assert.AreEqual(tgt.TimeStamp, actual.TimeStamp);
             }
-            Assert.Fail("Test not created");
         }
 
         [TestMethod]
@@ -483,9 +549,16 @@ namespace Reviews.Tests.Controllers
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
             {
+                int? id = null;
 
+                // Act
+                var result = await controller.Create(id);
+
+                // Assert
+                Assert.IsNotNull(result);
+                var objResult = result as BadRequestObjectResult;
+                Assert.IsNotNull(objResult);
             }
-            Assert.Fail("Test not created");
         }
 
         [TestMethod]
@@ -496,22 +569,36 @@ namespace Reviews.Tests.Controllers
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
             {
+                var id = -9;
 
+                // Act
+                var result = await controller.Create(id);
+
+                // Assert
+                Assert.IsNotNull(result);
+                var objResult = result as BadRequestObjectResult;
+                Assert.IsNotNull(objResult);
             }
-            Assert.Fail("Test not created");
         }
 
         [TestMethod]
-        public async Task CreateGet_Exists()
+        public async Task CreateGet_NoPurchase()
         {
             // Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
             {
+                var id = 360;
 
+                // Act
+                var result = await controller.Create(id);
+
+                // Assert
+                Assert.IsNotNull(result);
+                var objResult = result as BadRequestObjectResult;
+                Assert.IsNotNull(objResult);
             }
-            Assert.Fail("Test not created");
         }
 
         [TestMethod]
@@ -522,9 +609,83 @@ namespace Reviews.Tests.Controllers
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
             {
+                var id = 1;
 
+                // Act
+                var result = await controller.Delete(id) as ViewResult;
+
+                // Assert
+                Assert.IsNotNull(result);
+                var review = result.Model as Review;
+                Assert.IsNotNull(review);
+                var expected = TestData.Reviews().FirstOrDefault(r => r.Id == id);
+
+                Assert.AreEqual(expected.Id,review.Id);
+                Assert.AreEqual(expected.Content, review.Content);
+                Assert.AreEqual(expected.IsVisible, review.IsVisible);
+                Assert.AreEqual(expected.PurchaseId, review.PurchaseId);
+                Assert.AreEqual(expected.Rating, review.Rating);
             }
-            Assert.Fail("Test not created");
+        }
+
+        [TestMethod]
+        public async Task DeleteGet_OutOfRange()
+        {
+            // Arrange
+            var repo = new FakeReviewRepository(TestData.Reviews());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+                var id = -9;
+
+                // Act
+                var result = await controller.Delete(id);
+
+                // Assert
+                Assert.IsNotNull(result);
+                var objResult = result as BadRequestResult;
+                Assert.IsNotNull(objResult);
+            }
+        }
+
+        [TestMethod]
+        public async Task DeleteGet_Null()
+        {
+            // Arrange
+            var repo = new FakeReviewRepository(TestData.Reviews());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+                int? id = null;
+
+                // Act
+                var result = await controller.Delete(id);
+
+                // Assert
+                Assert.IsNotNull(result);
+                var objResult = result as BadRequestResult;
+                Assert.IsNotNull(objResult);
+            }
+        }
+
+        [TestMethod]
+        public async Task DeleteGet_NoReview()
+        {
+            // Arrange
+            var repo = new FakeReviewRepository(TestData.Reviews());
+            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+                var id = 360;
+
+                // Act
+                var result = await controller.Delete(id);
+
+                // Assert
+                Assert.IsNotNull(result);
+                var objResult = result as NotFoundResult;
+                Assert.IsNotNull(objResult);
+            }
         }
 
         [TestMethod]
@@ -535,22 +696,15 @@ namespace Reviews.Tests.Controllers
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
             using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
             {
+                var review = new Review {Content = "This is a test review", PurchaseId = 63, Rating = 3};
 
+                // Act
+                var result = await controller.Create(review);
+
+                // Assert
+                Assert.IsNotNull(result);
+                Assert.IsInstanceOfType(result,typeof(OkObjectResult));
             }
-            Assert.Fail("Test not created");
-        }
-
-        [TestMethod]
-        public async Task Create_ModelInvalid()
-        {
-            // Arrange
-            var repo = new FakeReviewRepository(TestData.Reviews());
-            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
-            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
-            {
-
-            }
-            Assert.Fail("Test not created");
         }
     }
 }

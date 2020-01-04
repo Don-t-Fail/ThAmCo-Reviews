@@ -74,21 +74,27 @@ namespace Reviews.Controllers
             }
 
             var reviews = await _repository.GetReviewsByAccount(id.Value);
-            var revData = reviews.Select
-            (
-                r => new ReviewAccountViewModel
-                {
-                    Id = r.Id,
-                    Content = r.Content,
-                    IsVisible = r.IsVisible,
-                    PurchaseId = r.PurchaseId,
-                    Purchase = r.Purchase,
-                    AccountId = r.Purchase.AccountId,
-                    ProductId = r.Purchase.ProductId,
-                    Rating = r.Rating
-                }
-            );
-            return View(revData.ToList());
+
+            if (reviews.Any())
+            {
+                var revData = reviews.Select
+                (
+                    r => new ReviewAccountViewModel
+                    {
+                        Id = r.Id,
+                        Content = r.Content,
+                        IsVisible = r.IsVisible,
+                        PurchaseId = r.PurchaseId,
+                        Purchase = r.Purchase,
+                        AccountId = r.Purchase.AccountId,
+                        ProductId = r.Purchase.ProductId,
+                        Rating = r.Rating
+                    }
+                );
+                return View(revData.ToList());
+            }
+
+            return NotFound();
         }
 
         private bool ReviewExists(int id)
