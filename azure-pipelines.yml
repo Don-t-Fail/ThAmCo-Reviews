@@ -43,7 +43,7 @@ steps:
 #    repository: 'dcurrey/thamco-reviews'
 #    Dockerfile: 'Reviews/Dockerfile'
 #    tags: 'latest'
-    
+
 #- task: Docker@2
 #  displayName: 'Pushing to DockerHub'
 #  inputs:

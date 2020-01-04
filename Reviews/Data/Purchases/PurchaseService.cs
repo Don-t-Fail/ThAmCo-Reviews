@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.Protocols;
 
 namespace Reviews.Data.Purchases
 {
@@ -25,7 +26,7 @@ namespace Reviews.Data.Purchases
 
         public async Task<List<PurchaseDto>> GetAll()
         {
-            var client = _clientFactory.CreateClient("RetryAndBreak");
+            var client = GetHttpClient("RetryAndBreak");
 
             _logger.LogInformation("Contacting Purchasing Service");
 
@@ -42,6 +43,11 @@ namespace Reviews.Data.Purchases
 
         public async Task<PurchaseDto> GetPurchase(int id)
         {
+            if (id <= 0)
+            {
+                return null;
+            }
+
             var client = GetHttpClient("RetryAndBreak");
 
             _logger.LogInformation("Contacting Purchase Service");
@@ -59,7 +65,10 @@ namespace Reviews.Data.Purchases
 
         private HttpClient GetHttpClient(string s)
         {
-            if (_clientFactory == null && HttpClient != null) return HttpClient;
+            if (_clientFactory == null && HttpClient != null)
+            {
+                return HttpClient;
+            }
 
             var client = _clientFactory.CreateClient(s);
             client.BaseAddress = new Uri(_config["PurchasesUrl"]);
