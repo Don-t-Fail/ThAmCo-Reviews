@@ -31,7 +31,6 @@ namespace Reviews.Data.Purchases
         {
             var client = _clientFactory.CreateClient("RetryAndBreak");
             
-
             _logger.LogInformation("Contacting Purchasing Service");
 
             var resp = await client.GetAsync("purchases/GetAll");
