@@ -7,8 +7,15 @@ using Reviews.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Moq;
+using Moq.Protected;
+using Newtonsoft.Json;
 using Reviews.Data.Purchases;
 using Reviews.Services;
 
@@ -55,18 +62,54 @@ namespace Reviews.Tests.Controllers
                 }}
             };
 
-            public static List<Purchase> Purchases() => new List<Purchase>
+            public static List<PurchaseDto> Purchases() => new List<PurchaseDto>
             {
-                new Purchase { Id = 1, AccountId = 1, ProductId = 1}
+                new PurchaseDto { Id = 1, AccountId = 1, ProductId = 1, AddressId = 1, Qty = 1}
             };
+        }
+
+        private Mock<HttpMessageHandler> CreateHttpMock(HttpResponseMessage expected)
+        {
+            var mock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            mock.Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(expected)
+                .Verifiable();
+            return mock;
+        }
+
+        private HttpClient SetupMock()
+        {
+            var expectedHttpResp = TestData.Purchases().Select
+            (
+                p => new PurchaseDto
+                {
+                    Id = p.Id,
+                    AccountId = p.AccountId,
+                    ProductId = p.ProductId
+                }
+            );
+            var expectedJson = JsonConvert.SerializeObject(expectedHttpResp);
+            var expResult = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(expectedJson, Encoding.UTF8, "application/json")
+            };
+            return new HttpClient(CreateHttpMock(expResult).Object);
         }
 
         [TestMethod]
         public async Task GetReviewDetailsTest_Success()
         {
             //Arrange
+
+            var httpClient = SetupMock();
+
             var repo = new FakeReviewRepository(TestData.Reviews());
-            var purchaseRepo = new FakePurchaseService(TestData.Purchases());
+            var purchaseRepo = new PurchaseService(null,null,new NullLogger<PurchaseService>()){HttpClient = httpClient};
             var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
             var id = 1;
 
@@ -115,7 +158,7 @@ namespace Reviews.Tests.Controllers
             var result = await controller.Details(id);
 
             //Assert
-            Assert.IsInstanceOfType(result.Result,typeof(NotFoundResult));
+            Assert.IsInstanceOfType(result.Result, typeof(NotFoundResult));
         }
 
         [TestMethod]
@@ -336,12 +379,6 @@ namespace Reviews.Tests.Controllers
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(BadRequestResult));
-        }
-
-        [TestMethod]
-        public async Task CreateReview_Success()
-        {
-
         }
     }
 }
