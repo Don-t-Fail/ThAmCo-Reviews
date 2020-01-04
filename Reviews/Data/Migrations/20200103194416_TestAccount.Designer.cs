@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Reviews.Data;
 
 namespace Reviews.Migrations
 {
     [DbContext(typeof(ReviewDbContext))]
-    partial class ReviewDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200103194416_TestAccount")]
+    partial class TestAccount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,7 +65,7 @@ namespace Reviews.Migrations
                         },
                         new
                         {
-                            Id = 42,
+                            Id = 7,
                             IsStaff = false
                         });
                 });
@@ -83,6 +85,50 @@ namespace Reviews.Migrations
                     b.HasIndex("AccountId");
 
                     b.ToTable("Purchase");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccountId = 1,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AccountId = 1,
+                            ProductId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AccountId = 3,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AccountId = 4,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AccountId = 3,
+                            ProductId = 3
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AccountId = 5,
+                            ProductId = 1
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AccountId = 6,
+                            ProductId = 1
+                        });
                 });
 
             modelBuilder.Entity("Reviews.Models.Review", b =>
@@ -105,6 +151,56 @@ namespace Reviews.Migrations
                         .IsUnique();
 
                     b.ToTable("Review");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Content = "This is a test review for product 1",
+                            IsVisible = true,
+                            PurchaseId = 1,
+                            Rating = 5
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Content = "This is a review for product 2",
+                            IsVisible = true,
+                            PurchaseId = 2,
+                            Rating = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Content = "This is a test review for product 1",
+                            IsVisible = true,
+                            PurchaseId = 3,
+                            Rating = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Content = "This is a test review for product 1",
+                            IsVisible = false,
+                            PurchaseId = 4,
+                            Rating = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Content = "This is a test review for product 3",
+                            IsVisible = true,
+                            PurchaseId = 5,
+                            Rating = 3
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Content = "This is a test review for product 1",
+                            IsVisible = true,
+                            PurchaseId = 6,
+                            Rating = 3
+                        });
                 });
 
             modelBuilder.Entity("Reviews.Models.Purchase", b =>
