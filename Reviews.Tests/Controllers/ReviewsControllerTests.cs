@@ -105,28 +105,29 @@ namespace Reviews.Tests.Controllers
         public async Task GetReviewDetailsTest_Success()
         {
             //Arrange
-
             var httpClient = SetupMock();
 
             var repo = new FakeReviewRepository(TestData.Reviews());
             var purchaseRepo = new PurchaseService(null,null,new NullLogger<PurchaseService>()){HttpClient = httpClient};
-            var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
-            var id = 1;
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+                var id = 1;
 
-            //Act
-            var result = await controller.Details(id);
+                //Act
+                var result = await controller.Details(id);
 
-            //Assert
-            var objResult = result.Result as OkObjectResult;
-            Assert.IsNotNull(objResult);
-            var retResult = objResult.Value as ReviewDetailsDto;
-            Assert.IsNotNull(retResult);
+                //Assert
+                var objResult = result.Result as OkObjectResult;
+                Assert.IsNotNull(objResult);
+                var retResult = objResult.Value as ReviewDetailsDto;
+                Assert.IsNotNull(retResult);
 
-            Assert.AreEqual(TestData.Reviews()[id - 1].Id, retResult.Id);
-            Assert.AreEqual(TestData.Reviews()[id - 1].PurchaseId, retResult.PurchaseId);
-            Assert.AreEqual(TestData.Reviews()[id - 1].IsVisible, retResult.IsVisible);
-            Assert.AreEqual(TestData.Reviews()[id - 1].Rating, retResult.Rating);
-            Assert.AreEqual(TestData.Reviews()[id - 1].Content, retResult.Content);
+                Assert.AreEqual(TestData.Reviews()[id - 1].Id, retResult.Id);
+                Assert.AreEqual(TestData.Reviews()[id - 1].PurchaseId, retResult.PurchaseId);
+                Assert.AreEqual(TestData.Reviews()[id - 1].IsVisible, retResult.IsVisible);
+                Assert.AreEqual(TestData.Reviews()[id - 1].Rating, retResult.Rating);
+                Assert.AreEqual(TestData.Reviews()[id - 1].Content, retResult.Content);
+            }
         }
 
         [TestMethod]
@@ -135,14 +136,16 @@ namespace Reviews.Tests.Controllers
             // Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
-            var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
-            var id = -9;
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+                var id = -9;
 
-            // Act
-            var result = await controller.Details(id);
+                // Act
+                var result = await controller.Details(id);
 
-            // Assert
-            Assert.IsInstanceOfType(result.Result, typeof(BadRequestResult));
+                // Assert
+                Assert.IsInstanceOfType(result.Result, typeof(BadRequestResult));
+            }
         }
 
         [TestMethod]
@@ -151,14 +154,16 @@ namespace Reviews.Tests.Controllers
             //Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
-            var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
-            var id = 2;
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+                var id = 2;
 
-            //Act
-            var result = await controller.Details(id);
+                //Act
+                var result = await controller.Details(id);
 
-            //Assert
-            Assert.IsInstanceOfType(result.Result, typeof(NotFoundResult));
+                //Assert
+                Assert.IsInstanceOfType(result.Result, typeof(NotFoundResult));
+            }
         }
 
         [TestMethod]
@@ -167,15 +172,17 @@ namespace Reviews.Tests.Controllers
             //Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
-            var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
-            var id = 42;
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+                var id = 42;
 
-            //Act
-            var result = await controller.Details(id);
+                //Act
+                var result = await controller.Details(id);
 
-            //Assert
-            //Non-Existing review not found
-            Assert.IsInstanceOfType(result.Result, typeof(NotFoundResult));
+                //Assert
+                //Non-Existing review not found
+                Assert.IsInstanceOfType(result.Result, typeof(NotFoundResult));
+            }
         }
 
         [TestMethod]
@@ -184,19 +191,21 @@ namespace Reviews.Tests.Controllers
             //Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
-            var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
-            var prodId = 75;
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+                var prodId = 75;
 
-            //Act
-            var result = await controller.ProductAverage(prodId);
+                //Act
+                var result = await controller.ProductAverage(prodId);
 
-            //Assert
-            Assert.IsNotNull(result);
-            var objResult = result.Result as OkObjectResult;
-            Assert.IsNotNull(objResult);
-            var res = objResult.Value;
+                //Assert
+                Assert.IsNotNull(result);
+                var objResult = result.Result as OkObjectResult;
+                Assert.IsNotNull(objResult);
+                var res = objResult.Value;
 
-            Assert.AreEqual(Convert.ToDouble(4), res);
+                Assert.AreEqual(Convert.ToDouble(4), res);
+            }
         }
 
         [TestMethod]
@@ -205,19 +214,21 @@ namespace Reviews.Tests.Controllers
             //Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
-            var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
-            var prodId = 1;
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+                var prodId = 1;
 
-            //Act
-            var result = await controller.ProductAverage(prodId);
+                //Act
+                var result = await controller.ProductAverage(prodId);
 
-            //Assert
-            Assert.IsNotNull(result);
-            var objResult = result.Result as OkObjectResult;
-            Assert.IsNotNull(objResult);
-            var res = objResult.Value;
+                //Assert
+                Assert.IsNotNull(result);
+                var objResult = result.Result as OkObjectResult;
+                Assert.IsNotNull(objResult);
+                var res = objResult.Value;
 
-            Assert.AreEqual(2.5, res);
+                Assert.AreEqual(2.5, res);
+            }
         }
 
         [TestMethod]
@@ -226,14 +237,16 @@ namespace Reviews.Tests.Controllers
             //Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
-            var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
-            var prodId = -9;
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+                var prodId = -9;
 
-            //Act
-            var result = await controller.ProductAverage(prodId);
+                //Act
+                var result = await controller.ProductAverage(prodId);
 
-            //Assert
-            Assert.IsInstanceOfType(result.Result, typeof(BadRequestResult));
+                //Assert
+                Assert.IsInstanceOfType(result.Result, typeof(BadRequestResult));
+            }
         }
 
         [TestMethod]
@@ -242,14 +255,16 @@ namespace Reviews.Tests.Controllers
             //Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
-            var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
-            var prodId = 7000;
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+                var prodId = 7000;
 
-            //Act
-            var result = await controller.ProductAverage(prodId);
+                //Act
+                var result = await controller.ProductAverage(prodId);
 
-            //Assert
-            Assert.IsInstanceOfType(result.Result, typeof(NotFoundResult));
+                //Assert
+                Assert.IsInstanceOfType(result.Result, typeof(NotFoundResult));
+            }
         }
 
         [TestMethod]
@@ -258,21 +273,23 @@ namespace Reviews.Tests.Controllers
             //Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
-            var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
-            var prodId = 3;
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+                var prodId = 3;
 
-            //Act
-            var result = await controller.ProductAverage(prodId);
-            var expected = await controller.GetReviewProduct(prodId);
+                //Act
+                var result = await controller.ProductAverage(prodId);
+                var expected = await controller.GetReviewProduct(prodId);
 
-            //Assert
-            var objResult = result.Result as OkObjectResult;
-            Assert.IsNotNull(objResult);
-            var retResult = objResult.Value;
-            Assert.IsNotNull(retResult);
-            double val = TestData.Reviews().FirstOrDefault(r => r.Purchase.Id == prodId).Rating;
+                //Assert
+                var objResult = result.Result as OkObjectResult;
+                Assert.IsNotNull(objResult);
+                var retResult = objResult.Value;
+                Assert.IsNotNull(retResult);
+                double val = TestData.Reviews().FirstOrDefault(r => r.Purchase.Id == prodId).Rating;
 
-            Assert.AreEqual(val, retResult);
+                Assert.AreEqual(val, retResult);
+            }
         }
 
         [TestMethod]
@@ -281,22 +298,24 @@ namespace Reviews.Tests.Controllers
             // Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
-            var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
-            var prodId = 1;
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+                var prodId = 1;
 
-            // Act
-            var result = await controller.GetReviewProduct(prodId);
+                // Act
+                var result = await controller.GetReviewProduct(prodId);
 
-            // Assert
-            Assert.IsNotNull(result);
-            var objResult = result.Result as OkObjectResult;
-            Assert.IsNotNull(objResult);
-            var retResult = objResult.Value as List<Review>;
-            Assert.IsNotNull(retResult);
-            //foreach (Review review in retResult)
-            //{
-            //    Assert.AreEqual(await repo.GetReview(review.Id), review);
-            //}
+                // Assert
+                Assert.IsNotNull(result);
+                var objResult = result.Result as OkObjectResult;
+                Assert.IsNotNull(objResult);
+                var retResult = objResult.Value as List<Review>;
+                Assert.IsNotNull(retResult);
+                //foreach (Review review in retResult)
+                //{
+                //    Assert.AreEqual(await repo.GetReview(review.Id), review);
+                //}
+            }
         }
 
         [TestMethod]
@@ -305,14 +324,16 @@ namespace Reviews.Tests.Controllers
             // Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
-            var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
-            var prodId = -99;
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+                var prodId = -99;
 
-            // Act
-            var result = await controller.GetReviewProduct(prodId);
+                // Act
+                var result = await controller.GetReviewProduct(prodId);
 
-            // Assert
-            Assert.IsInstanceOfType(result.Result, typeof(BadRequestResult));
+                // Assert
+                Assert.IsInstanceOfType(result.Result, typeof(BadRequestResult));
+            }
         }
 
         [TestMethod]
@@ -321,15 +342,17 @@ namespace Reviews.Tests.Controllers
             //Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
-            var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
-            var prodId = 2;
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+                var prodId = 2;
 
-            //Act
-            var result = await controller.GetReviewProduct(prodId);
-            var expected = TestData.Reviews().Where(r => r.Purchase.ProductId == prodId && r.IsVisible).ToList();
+                //Act
+                var result = await controller.GetReviewProduct(prodId);
+                var expected = TestData.Reviews().Where(r => r.Purchase.ProductId == prodId && r.IsVisible).ToList();
 
-            //Assert
-            Assert.IsInstanceOfType(result.Result, typeof(NotFoundResult));
+                //Assert
+                Assert.IsInstanceOfType(result.Result, typeof(NotFoundResult));
+            }
         }
 
         [TestMethod]
@@ -338,14 +361,16 @@ namespace Reviews.Tests.Controllers
             //Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
-            var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
-            var prodId = 370;
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+                var prodId = 370;
 
-            //Act
-            var result = await controller.GetReviewProduct(prodId);
+                //Act
+                var result = await controller.GetReviewProduct(prodId);
 
-            //Assert
-            Assert.IsInstanceOfType(result.Result, typeof(NotFoundResult));
+                //Assert
+                Assert.IsInstanceOfType(result.Result, typeof(NotFoundResult));
+            }
         }
 
         [TestMethod]
@@ -354,15 +379,17 @@ namespace Reviews.Tests.Controllers
             // Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
-            var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
-            var reviewId = 1;
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+                var reviewId = 1;
 
-            // Act
-            var result = await controller.DeleteConfirmed(reviewId);
-            var review = await controller.Details(reviewId);
+                // Act
+                await controller.DeleteConfirmed(reviewId);
+                var review = await controller.Details(reviewId);
 
-            // Assert
-            Assert.IsInstanceOfType(review.Result, typeof(NotFoundResult));
+                // Assert
+                Assert.IsInstanceOfType(review.Result, typeof(NotFoundResult));
+            }
         }
 
         [TestMethod]
@@ -371,14 +398,16 @@ namespace Reviews.Tests.Controllers
             // Arrange
             var repo = new FakeReviewRepository(TestData.Reviews());
             var purchaseRepo = new FakePurchaseService(TestData.Purchases());
-            var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>());
-            var reviewId = -5;
+            using (var controller = new ReviewsController(repo, purchaseRepo, new NullLogger<ReviewsController>()))
+            {
+                var reviewId = -5;
 
-            // Act
-            var result = await controller.DeleteConfirmed(reviewId);
+                // Act
+                var result = await controller.DeleteConfirmed(reviewId);
 
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+                // Assert
+                Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+            }
         }
     }
 }
