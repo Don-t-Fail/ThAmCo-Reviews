@@ -1,12 +1,10 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Reviews.Services;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Reviews.Models;
-using Reviews.Services;
 
 namespace Reviews.Data.Purchases
 {
@@ -28,7 +26,7 @@ namespace Reviews.Data.Purchases
         public async Task<List<PurchaseDto>> GetAll()
         {
             var client = _clientFactory.CreateClient("RetryAndBreak");
-            
+
             _logger.LogInformation("Contacting Purchasing Service");
 
             var resp = await client.GetAsync("purchases/GetAll");
@@ -48,7 +46,7 @@ namespace Reviews.Data.Purchases
 
             _logger.LogInformation("Contacting Purchase Service");
 
-            var resp = await client.GetAsync("purchases/details/"+id);
+            var resp = await client.GetAsync("purchases/details/" + id);
 
             if (resp.IsSuccessStatusCode)
             {
