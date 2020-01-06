@@ -80,15 +80,15 @@ namespace Reviews.Controllers
         }
 
         [Authorize]
-        public IActionResult Authed()
+        public IActionResult Auth()
         {
-            return Ok("Authed");
+            return Ok("Authorised");
         }
 
         [Authorize(Policy = "StaffOnly")]
-        public IActionResult StaffAuthed()
+        public IActionResult StaffAuth()
         {
-            return Ok("Authed");
+            return Ok("Staff Member Authorised");
         }
 
         public IActionResult AccessDenied()

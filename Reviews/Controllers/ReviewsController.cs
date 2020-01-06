@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Reviews.Controllers
 {
@@ -197,6 +198,13 @@ namespace Reviews.Controllers
                 IsVisible = review.IsVisible,
                 Rating = review.Rating
             });
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Auth()
+        {
+            return Ok("Authorised.");
         }
     }
 }
