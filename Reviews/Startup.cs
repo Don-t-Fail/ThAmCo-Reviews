@@ -52,6 +52,15 @@ namespace Reviews
 
             services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<IPurchaseService, PurchaseService>();
+
+            services.AddAuthentication("Cookies")
+                .AddCookie("Cookies");
+
+            services.AddAuthorization
+            (
+                options =>
+                    options.AddPolicy("StaffOnly", builder => { builder.RequireClaim("role", "Staff"); })
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,6 +80,8 @@ namespace Reviews
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
