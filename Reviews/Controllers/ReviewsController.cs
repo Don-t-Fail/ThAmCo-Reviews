@@ -30,6 +30,7 @@ namespace Reviews.Controllers
         }
 
         // GET: Reviews/Create/5
+        [Authorize]
         public async Task<IActionResult> Create(int? id)
         {
             if (id != null && id > 0)
@@ -49,6 +50,7 @@ namespace Reviews.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("PurchaseId,IsVisible,Rating,Content")] Review review)
         {
             if (ModelState.IsValid && !ReviewExists(review.Id))
@@ -103,6 +105,7 @@ namespace Reviews.Controllers
         }
 
         // GET: Reviews/Delete/5
+        [Authorize(Policy = "StaffOnly")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || id < 0)
@@ -120,6 +123,7 @@ namespace Reviews.Controllers
         }
 
         // POST: Reviews/Delete/5
+        [Authorize(Policy = "StaffOnly")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
