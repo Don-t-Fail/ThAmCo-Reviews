@@ -6,6 +6,7 @@ namespace Reviews.Services
     {
         public int Id { get; set; }
         public int ProductId { get; set; }
+        public int PurchaseRef { get; set; }
         public int Qty { get; set; }
         public int AddressId { get; set; }
         public int AccountId { get; set; }
