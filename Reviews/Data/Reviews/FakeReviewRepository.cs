@@ -25,7 +25,7 @@ namespace Reviews.Data
             return await Task.FromResult(_reviews.Where(r => r.IsVisible).FirstOrDefault(r => r.Id == id));
         }
 
-        public void InsertReview(Review review)
+        public async Task InsertReview(Review review)
         {
             _reviews.Add(review);
         }

@@ -38,8 +38,10 @@ namespace Reviews.Data
             return reviews;
         }
 
-        public void InsertReview(Review review)
+        public async Task InsertReview(Review review)
         {
+            review.PurchaseId = (await _context.Purchase.Where
+                (p => p.PurchaseRef == review.PurchaseRef).FirstOrDefaultAsync()).Id;
             _context.Review.Add(review);
         }
 

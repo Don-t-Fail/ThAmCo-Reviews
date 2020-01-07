@@ -52,6 +52,7 @@ namespace Reviews
 
             services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<IPurchaseService, PurchaseService>();
+            services.AddScoped<IPurchaseRepository, PurchaseRepository>();
 
             services.AddAuthentication("Cookies")
                 .AddCookie("Cookies");

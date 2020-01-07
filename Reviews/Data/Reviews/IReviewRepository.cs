@@ -10,7 +10,7 @@ namespace Reviews.Data
 
         Task<Review> GetReview(int id);
 
-        void InsertReview(Review review);
+        Task InsertReview(Review review);
 
         void DeleteReview(int id);
 
