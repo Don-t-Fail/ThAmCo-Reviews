@@ -23,7 +23,7 @@ namespace Reviews.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Login()
+        public IActionResult Login()
         {
             return View();
         }
