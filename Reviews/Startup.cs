@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Polly;
+using Reviews.Data;
+using Reviews.Data.Purchases;
+using System;
 
 namespace Reviews
 {
@@ -31,12 +32,40 @@ namespace Reviews
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddDbContext<ReviewDbContext>(options => options.UseSqlServer(
+                Configuration.GetConnectionString("ReviewsConnection"), optionsBuilder =>
+                {
+                    //Enable retry pattern on EF SQL
+                    optionsBuilder.EnableRetryOnFailure(3, TimeSpan.FromSeconds(10), null);
+                }
+            ));
+
+            //Polly Circuit Breaker HttpClient Config
+            services.AddHttpClient("RetryAndBreak")
+                .AddTransientHttpErrorPolicy(p => p
+                    .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))))
+                .AddTransientHttpErrorPolicy(p =>
+                    p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
+
+            services.AddScoped<IReviewRepository, ReviewRepository>();
+            services.AddScoped<IPurchaseService, PurchaseService>();
+            services.AddScoped<IPurchaseRepository, PurchaseRepository>();
+
+            services.AddAuthentication("Cookies")
+                .AddCookie("Cookies");
+
+            services.AddAuthorization
+            (
+                options =>
+                    options.AddPolicy("StaffOnly", builder => { builder.RequireClaim("role", "Staff"); })
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -52,6 +81,8 @@ namespace Reviews
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
