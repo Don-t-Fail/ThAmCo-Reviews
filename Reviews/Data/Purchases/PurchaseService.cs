@@ -15,16 +15,16 @@ namespace Reviews.Data.Purchases
         private readonly IHttpClientFactory _clientFactory;
         private readonly IConfiguration _config;
         private readonly ILogger<PurchaseService> _logger;
-        private readonly ReviewDbContext _context;
+        private readonly IPurchaseRepository _purchaseRepo;
 
         public HttpClient HttpClient { get; set; }
 
-        public PurchaseService(IHttpClientFactory clientFactory, IConfiguration config, ILogger<PurchaseService> logger, ReviewDbContext context)
+        public PurchaseService(IHttpClientFactory clientFactory, IConfiguration config, ILogger<PurchaseService> logger, IPurchaseRepository purchaseRepo)
         {
             _clientFactory = clientFactory;
             _config = config;
             _logger = logger;
-            _context = context;
+            _purchaseRepo = purchaseRepo;
         }
 
         public async Task<List<PurchaseDto>> GetAll()
@@ -65,20 +65,22 @@ namespace Reviews.Data.Purchases
             if (resp.IsSuccessStatusCode)
             {
                 var purchase = await resp.Content.ReadAsAsync<PurchaseDto>();
-                purchase.PurchaseRef = purchase.Id;
-                purchase.Id = 0;
-
-                var newPurchase = new Purchase
+                if (purchase != null)
                 {
-                    AccountId = purchase.AccountId,
-                    ProductId = purchase.ProductId,
-                    PurchaseRef = purchase.PurchaseRef
-                };
-                
-                await _context.Purchase.AddAsync(newPurchase);
-                await _context.SaveChangesAsync();
+                    purchase.PurchaseRef = purchase.Id;
+                    purchase.Id = 0;
+                    var newPurchase = new Purchase
+                    {
+                        AccountId = purchase.AccountId,
+                        ProductId = purchase.ProductId,
+                        PurchaseRef = purchase.PurchaseRef
+                    };
 
-                return purchase;
+                    await _purchaseRepo.InsertPurchase(newPurchase);
+                    await _purchaseRepo.Save();
+
+                    return purchase;
+                }
             }
 
             return null;
