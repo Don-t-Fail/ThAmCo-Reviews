@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Protocols;
+using Reviews.Models;
 
 namespace Reviews.Data.Purchases
 {
@@ -14,14 +15,16 @@ namespace Reviews.Data.Purchases
         private readonly IHttpClientFactory _clientFactory;
         private readonly IConfiguration _config;
         private readonly ILogger<PurchaseService> _logger;
+        private readonly ReviewDbContext _context;
 
         public HttpClient HttpClient { get; set; }
 
-        public PurchaseService(IHttpClientFactory clientFactory, IConfiguration config, ILogger<PurchaseService> logger)
+        public PurchaseService(IHttpClientFactory clientFactory, IConfiguration config, ILogger<PurchaseService> logger, ReviewDbContext context)
         {
             _clientFactory = clientFactory;
             _config = config;
             _logger = logger;
+            _context = context;
         }
 
         public async Task<List<PurchaseDto>> GetAll()
@@ -35,6 +38,11 @@ namespace Reviews.Data.Purchases
             if (resp.IsSuccessStatusCode)
             {
                 var purchases = await resp.Content.ReadAsAsync<List<PurchaseDto>>();
+                foreach (var purchase in purchases)
+                {
+                    purchase.PurchaseRef = purchase.Id;
+                    purchase.Id = 0;
+                }
                 return purchases;
             }
 
@@ -57,6 +65,19 @@ namespace Reviews.Data.Purchases
             if (resp.IsSuccessStatusCode)
             {
                 var purchase = await resp.Content.ReadAsAsync<PurchaseDto>();
+                purchase.PurchaseRef = purchase.Id;
+                purchase.Id = 0;
+
+                var newPurchase = new Purchase
+                {
+                    AccountId = purchase.AccountId,
+                    ProductId = purchase.ProductId,
+                    PurchaseRef = purchase.PurchaseRef
+                };
+                
+                await _context.Purchase.AddAsync(newPurchase);
+                await _context.SaveChangesAsync();
+
                 return purchase;
             }
 
