@@ -53,13 +53,24 @@ namespace Reviews.Controllers
         [Authorize]
         public async Task<IActionResult> Create([Bind("PurchaseId,IsVisible,Rating,Content")] Review review)
         {
-            if (ModelState.IsValid && !ReviewExists(review.Id))
+            if (ModelState.IsValid && !ReviewExists(review.PurchaseId))
             {
-                _repository.InsertReview(review);
+                review.PurchaseRef = review.PurchaseId;
+                review.PurchaseId = 0;
+                review.IsVisible = true;
+                await _repository.InsertReview(review);
                 await _repository.Save();
-                return Ok(await _repository.GetReview(review.Id));
+                var insReview = await _repository.GetReview(review.Id);
+                return Ok(new ReviewDetailsDto
+                {
+                    Content = insReview.Content,
+                    Id = insReview.Id,
+                    IsVisible = insReview.IsVisible,
+                    PurchaseId = insReview.PurchaseId,
+                    Rating = insReview.Rating
+                });
             }
-            return BadRequest(review);
+            return BadRequest("Review already exists.");
         }
 
         // GET: Reviews/IndexAccount/5
@@ -101,7 +112,7 @@ namespace Reviews.Controllers
 
         private bool ReviewExists(int id)
         {
-            return _repository.GetAll().Result.Any(e => e.Id == id);
+            return _repository.GetAll().Result.Any(r => r.PurchaseRef == id);
         }
 
         // GET: Reviews/Delete/5
@@ -206,9 +217,9 @@ namespace Reviews.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Auth()
+        public IActionResult Auth()
         {
-            return Ok("Authorised.");
+            return Ok("Authorised."+User.Identity.Name);
         }
     }
 }
