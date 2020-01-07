@@ -126,7 +126,13 @@ namespace Reviews.Data.Purchases.Tests
             var config = new Mock<IConfiguration>();
             client.BaseAddress = new Uri("http://localhost:12324/");
             config.SetupGet(s => s["PurchasesUrl"]).Returns("http:localhost:12324/");
-            var service = new PurchaseService(null, config.Object, new NullLogger<PurchaseService>()) {HttpClient = client};
+            var purchaseRepo = new FakePurchaseRepository(TestData.Purchases().Select(p => new Purchase
+            {
+                AccountId = p.AccountId,
+                Id = p.Id,
+                ProductId = p.ProductId
+            }).ToList());
+            var service = new PurchaseService(null, config.Object, new NullLogger<PurchaseService>(), purchaseRepo) {HttpClient = client};
 
             // Act
             var result = await service.GetAll();
@@ -135,8 +141,8 @@ namespace Reviews.Data.Purchases.Tests
             Assert.IsNotNull(result);
             foreach (var purchase in result)
             {
-                var testItem = TestData.Purchases().FirstOrDefault(p => p.Id == purchase.Id);
-                Assert.AreEqual(testItem.Id,purchase.Id);
+                var testItem = TestData.Purchases().FirstOrDefault(p => p.Id == purchase.PurchaseRef);
+                Assert.AreEqual(testItem.Id,purchase.PurchaseRef);
                 Assert.AreEqual(testItem.AccountId, purchase.AccountId);
             }
         }
@@ -150,7 +156,13 @@ namespace Reviews.Data.Purchases.Tests
             var config = new Mock<IConfiguration>();
             client.BaseAddress = new Uri("http://localhost:12324/");
             config.SetupGet(s => s["PurchasesUrl"]).Returns("http:localhost:12324/");
-            var service = new PurchaseService(null, config.Object, new NullLogger<PurchaseService>()) { HttpClient = client };
+            var purchaseRepo = new FakePurchaseRepository(TestData.Purchases().Select(p => new Purchase
+            {
+                AccountId = p.AccountId,
+                Id = p.Id,
+                ProductId = p.ProductId
+            }).ToList());
+            var service = new PurchaseService(null, config.Object, new NullLogger<PurchaseService>(), purchaseRepo) { HttpClient = client };
 
             // Act
             var result = await service.GetPurchase(id);
@@ -159,7 +171,7 @@ namespace Reviews.Data.Purchases.Tests
             Assert.IsNotNull(result);
 
             var testItem = TestData.Purchases().FirstOrDefault(p => p.Id == id);
-            Assert.AreEqual(testItem.Id, result.Id);
+            Assert.AreEqual(testItem.Id, result.PurchaseRef);
             Assert.AreEqual(testItem.AccountId, result.AccountId);
         }
 
@@ -172,7 +184,13 @@ namespace Reviews.Data.Purchases.Tests
             var config = new Mock<IConfiguration>();
             client.BaseAddress = new Uri("http://localhost:12324/");
             config.SetupGet(s => s["PurchasesUrl"]).Returns("http:localhost:12324/");
-            var service = new PurchaseService(null, config.Object, new NullLogger<PurchaseService>()) { HttpClient = client };
+            var purchaseRepo = new FakePurchaseRepository(TestData.Purchases().Select(p => new Purchase
+            {
+                AccountId = p.AccountId,
+                Id = p.Id,
+                ProductId = p.ProductId
+            }).ToList());
+            var service = new PurchaseService(null, config.Object, new NullLogger<PurchaseService>(), purchaseRepo) { HttpClient = client };
 
             // Act
             var result = await service.GetPurchase(id);
@@ -190,7 +208,13 @@ namespace Reviews.Data.Purchases.Tests
             var config = new Mock<IConfiguration>();
             client.BaseAddress = new Uri("http://localhost:12324/");
             config.SetupGet(s => s["PurchasesUrl"]).Returns("http:localhost:12324/");
-            var service = new PurchaseService(null, config.Object, new NullLogger<PurchaseService>()) { HttpClient = client };
+            var purchaseRepo = new FakePurchaseRepository(TestData.Purchases().Select(p => new Purchase
+            {
+                AccountId = p.AccountId,
+                Id = p.Id,
+                ProductId = p.ProductId
+            }).ToList());
+            var service = new PurchaseService(null, config.Object, new NullLogger<PurchaseService>(), purchaseRepo) { HttpClient = client };
 
             // Act
             var result = await service.GetPurchase(id);
